@@ -66,64 +66,64 @@ const StoresPage = (props) => {
   const [currPage, setcurrPage] = useState(1);
   const [products, setproducts] = useState([
     {
-      id: 1,
-      name: "Rick & Morty T-shirt",
+      id: 0,
+      name: "Adidas Official Store",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/520da097555edc0f286bb11b08eff168",
+      img_cover: "https://cf.shopee.vn/file/3a7da458d20218cfb0db50b7c6377812",
+    },
+    {
+      id: 1,
+      name: "Elip Sport",
+      price: 20,
+      img_cover: "https://cf.shopee.vn/file/3709ca3ddc939a528e40d27157b29809",
     },
     {
       id: 2,
-      name: "Rick & Morty T-shirt",
+      name: "Kamito Official Store",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/520da097555edc0f286bb11b08eff168",
+      img_cover: "https://cf.shopee.vn/file/e90aeaa9b67c855d466cfe3bfa48c231",
     },
     {
       id: 3,
-      name: "Rick & Morty T-shirt",
+      name: "Kingdom",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "	https://cf.shopee.vn/file/163bb01d24279461f842078f4fd3bb7e",
     },
     {
       id: 4,
-      name: "Rick & Morty T-shirt",
+      name: "Li-Ning Official Store",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "	https://cf.shopee.vn/file/dd4764662b13fdd79d2cc0e99f57dc9f",
     },
     {
       id: 5,
-      name: "Rick & Morty T-shirt",
+      name: "Macat",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "https://cf.shopee.vn/file/50560799b9619559f2631a760f25070d",
     },
     {
       id: 6,
-      name: "Rick & Morty T-shirt",
+      name: "Praza",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "https://cf.shopee.vn/file/9380df6a0c276dd593eee5e6c51064ce",
     },
     {
       id: 7,
-      name: "Rick & Morty T-shirt",
+      name: "Sport1",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/520da097555edc0f286bb11b08eff168",
+      img_cover: "https://cf.shopee.vn/file/7482dd4cd0ae1e8c745229e876ac61ad",
     },
     {
       id: 8,
-      name: "Rick & Morty T-shirt",
+      name: "HeyBro",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "https://cf.shopee.vn/file/78a0b020719983a32df58ec83aba05ba",
     },
     {
       id: 9,
-      name: "Rick & Morty T-shirt",
+      name: "Ima God Breaker",
       price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
-    },
-    {
-      id: 10,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover: "https://cf.shopee.vn/file/3bdc5b7619fbc9ff03b65c6e2545b6e2",
+      img_cover: "	https://cf.shopee.vn/file/5d2df059026e5d5110bd34c23067f7ac",
     },
   ]);
   const [countPage, setcountPage] = useState(0);
@@ -177,8 +177,8 @@ const StoresPage = (props) => {
               p.ram.substring(0, 4).includes("4GB")
                 ? "4GB"
                 : p.ram.substring(0, 4).includes("8GB")
-                  ? "8GB"
-                  : "16GB"
+                ? "8GB"
+                : "16GB"
             ) > -1
           );
         } else if (!fBrand && !fRam) {
@@ -193,8 +193,8 @@ const StoresPage = (props) => {
               p.ram.substring(0, 4).includes("4GB")
                 ? "4GB"
                 : p.ram.substring(0, 4).includes("8GB")
-                  ? "8GB"
-                  : "16GB"
+                ? "8GB"
+                : "16GB"
             ) > -1
           );
         } else if (!fRam) {
@@ -210,8 +210,8 @@ const StoresPage = (props) => {
               p.ram.substring(0, 4).includes("4GB")
                 ? "4GB"
                 : p.ram.substring(0, 4).includes("8GB")
-                  ? "8GB"
-                  : "16GB"
+                ? "8GB"
+                : "16GB"
             ) > -1
           );
         } else {
@@ -221,8 +221,8 @@ const StoresPage = (props) => {
               p.ram.substring(0, 4).includes("4GB")
                 ? "4GB"
                 : p.ram.substring(0, 4).includes("8GB")
-                  ? "8GB"
-                  : "16GB"
+                ? "8GB"
+                : "16GB"
             ) > -1 &&
             p.price >= value[0] &&
             p.price <= value[1]
