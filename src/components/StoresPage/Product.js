@@ -17,8 +17,8 @@ const Product = (props) => {
     <Container
       key={props.idx}
       display={props.display}
-      onClick={() => navigate('/stores/' + props.idx, { product })}
-    // onClick={() => props.onClick(product.product_id)}
+      onClick={() => navigate("/stores/" + props.idx, { state: product })}
+      // onClick={() => props.onClick(product.product_id)}
     >
       {/* {product.amount > 0 ?
         <Status display={props.display}>
@@ -88,7 +88,6 @@ const Name = styled.div`
 //   font-size: 13px;
 // `
 const Image = styled.div`
-  width: 214px;
   height: 120px;
   display: flex;
   flex-direction: column;
