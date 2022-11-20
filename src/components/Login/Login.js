@@ -17,21 +17,29 @@ const Login = (props) => {
   const [isSuccess, setIsSuccess] = useState(-1);
   const [msg, setMsg] = useState("");
   const login = () => {
-    if(username === "" || password === "") {
-      setMsg("Invalid username or password!")
+    if (username === "" || password === "") {
+      setMsg("Invalid username or password!");
       setIsSuccess(0);
       return;
     }
     const data = {
-      username: username,
-      password: password,
+      formFields: [
+        {
+          id: "email",
+          value: username,
+        },
+        {
+          id: "password",
+          value: password,
+        },
+      ],
     };
     axios
-      .post(`http://localhost/ecommerce/backend/api/auth/login.php`, data)
+      .post(`http://localhost:8082/auth/signin`, data, {withCredentials: true})
       .then(function (response) {
         console.log(response.data);
-        if (response.data.status === "Success") {
-          sessionStorage.setItem("user_id", response.data.user_id);
+        if (response.data.status === "OK") {
+          sessionStorage.setItem("user_id", response.data.user.id);
           navigate("/");
         } else if (response.data.status === "Blocked") {
           setMsg("Your account has been blocked!");
@@ -51,29 +59,38 @@ const Login = (props) => {
       setIsSuccess(0);
       return;
     }
-    if(username === "" || password === "" || fName === "" || lName === "") {
-      setMsg("Missing data required!")
+    if (username === "" || password === "" || fName === "" || lName === "") {
+      setMsg("Missing data required!");
       setIsSuccess(0);
       return;
     }
     const data = {
-      username: username,
-      password: password,
-      fName: fName,
-      lName: lName,
-      url_avt:
-        "https://www.seekpng.com/png/full/514-5147412_default-avatar-icon.png",
+      formFields: [
+        {
+          id: "email",
+          value: username,
+        },
+        {
+          id: "password",
+          value: password,
+        },
+        {
+          id: "firstname",
+          value: fName,
+        },
+        {
+          id: "lastname",
+          value: lName,
+        },
+      ],
     };
-    const res = await axios.post(
-      `http://localhost/ecommerce/backend/api/auth/register.php`,
-      data
-    );
+    const res = await axios.post(`http://localhost:8082/auth/signup`, data, {withCredentials:true});
     console.log(res.data);
-    if (res.data.status === "Success") {
+    if (res.data.status === "OK") {
       setMsg("Create account success!");
       setIsSuccess(1);
     } else {
-      setMsg("Username already exist!");
+      setMsg(res.data.formFields[0].error);
       setIsSuccess(0);
     }
   };
@@ -83,11 +100,10 @@ const Login = (props) => {
   };
   const enterLogin = (e) => {
     if (e.code === "Enter") {
-      if(targetTab === 'login'){
-        login()
-      }
-      else {
-        signup()
+      if (targetTab === "login") {
+        login();
+      } else {
+        signup();
       }
     }
   };
@@ -98,19 +114,8 @@ const Login = (props) => {
       <Header />
       <Container>
         <Head>
-          <h2 style={{ marginTop: "10px", width: "50%" }}>
-            {targetTab === "login" ? "Customer Login" : "Create Account"}
-          </h2>
-          <Button
-            className="phone"
-            variant="primary"
-            style={{ borderRadius: "20px" }}
-            onClick={
-              targetTab === "login"
-                ? () => changeTab(1)
-                : () => changeTab("login")
-            }
-          >
+          <h2 style={{ marginTop: "10px", width: "50%" }}>{targetTab === "login" ? "Customer Login" : "Create Account"}</h2>
+          <Button className="phone" variant="primary" style={{ borderRadius: "20px" }} onClick={targetTab === "login" ? () => changeTab(1) : () => changeTab("login")}>
             {targetTab === "login" ? "Sign up" : "Sign in"}
           </Button>
         </Head>
@@ -122,44 +127,22 @@ const Login = (props) => {
                   <Title>Registered Customer</Title>
                   <Form.Label>If you have an account, sign in.</Form.Label>
                   {isSuccess === 0 && (
-                    <Alert
-                      variant="danger"
-                      onClose={() => setIsSuccess(-1)}
-                      dismissible
-                    >
+                    <Alert variant="danger" onClose={() => setIsSuccess(-1)} dismissible>
                       <Alert.Heading>Failed to login!</Alert.Heading>
                       <p>{msg}</p>
                     </Alert>
                   )}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Label>
                       Username <span style={{ color: "red" }}>*</span>
                     </Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Your username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      onKeyUp={(e) => enterLogin(e)}
-                    />
+                    <Form.Control type="text" placeholder="Your username" value={username} onChange={(e) => setUsername(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                   </Form.Group>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Label>
                       Password <span style={{ color: "red" }}>*</span>
                     </Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyUp={(e) => enterLogin(e)}
-                    />
+                    <Form.Control type="password" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                   </Form.Group>
                 </Form>
                 <TextLink>Forgot your password?</TextLink>
@@ -169,6 +152,7 @@ const Login = (props) => {
                     width: "200px",
                     borderRadius: "20px",
                     margin: "0px auto",
+                    backgroundColor: "black"
                   }}
                   onClick={login}
                 >
@@ -183,11 +167,7 @@ const Login = (props) => {
                   <li>Keep more than one address</li>
                   <li>Track orders and more</li>
                 </ul>
-                <Button
-                  variant="primary"
-                  style={{ width: "200px", borderRadius: "20px" }}
-                  onClick={() => changeTab(1)}
-                >
+                <Button variant="primary" style={{ width: "200px", borderRadius: "20px",backgroundColor: "black"  }} onClick={() => changeTab(1)}>
                   Create an account
                 </Button>
               </Box>
@@ -197,106 +177,50 @@ const Login = (props) => {
               <Box>
                 <Form>
                   <Title>New Customer</Title>
-                  <Form.Label>
-                    Just create an account, you can buy everything.
-                  </Form.Label>
+                  <Form.Label>Just create an account, you can buy everything.</Form.Label>
                   {isSuccess === 0 && (
-                    <Alert
-                      variant="danger"
-                      onClose={() => setIsSuccess(-1)}
-                      dismissible
-                    >
+                    <Alert variant="danger" onClose={() => setIsSuccess(-1)} dismissible>
                       <Alert.Heading>Failed to create account!</Alert.Heading>
                       <p>{msg}</p>
                     </Alert>
                   )}
                   {isSuccess === 1 && (
-                    <Alert
-                      variant="success"
-                      onClose={() => setIsSuccess(-1)}
-                      dismissible
-                    >
+                    <Alert variant="success" onClose={() => setIsSuccess(-1)} dismissible>
                       <Alert.Heading>Successful!</Alert.Heading>
                       <p>{msg}</p>
                     </Alert>
                   )}
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Label>
                       Username <span style={{ color: "red" }}>*</span>
                     </Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Your username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      onKeyUp={(e) => enterLogin(e)}
-                    />
+                    <Form.Control type="text" placeholder="Your username" value={username} onChange={(e) => setUsername(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                   </Form.Group>
                   <Row>
-                    <Form.Group
-                      style={{ marginRight: "5px" }}
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group style={{ marginRight: "5px" }} className="mb-3" controlId="exampleForm.ControlInput1">
                       <Label>
                         First name <span style={{ color: "red" }}>*</span>
                       </Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Your first name"
-                        value={fName}
-                        onChange={(e) => setFName(e.target.value)}
-                        onKeyUp={(e) => enterLogin(e)}
-                      />
+                      <Form.Control type="text" placeholder="Your first name" value={fName} onChange={(e) => setFName(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                       <Label>
                         Last name <span style={{ color: "red" }}>*</span>
                       </Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Your last name"
-                        value={lName}
-                        onChange={(e) => setLName(e.target.value)}
-                        onKeyUp={(e) => enterLogin(e)}
-                      />
+                      <Form.Control type="text" placeholder="Your last name" value={lName} onChange={(e) => setLName(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                     </Form.Group>
                   </Row>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Label>
                       Password <span style={{ color: "red" }}>*</span>
                     </Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyUp={(e) => enterLogin(e)}
-                    />
+                    <Form.Control type="password" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                   </Form.Group>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Label>
                       Confirm password <span style={{ color: "red" }}>*</span>
                     </Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Your password"
-                      value={cfPassword}
-                      onChange={(e) => setCfPassword(e.target.value)}
-                      onKeyUp={(e) => enterLogin(e)}
-                    />
+                    <Form.Control type="password" placeholder="Your password" value={cfPassword} onChange={(e) => setCfPassword(e.target.value)} onKeyUp={(e) => enterLogin(e)} />
                   </Form.Group>
                 </Form>
                 <Button
@@ -305,6 +229,7 @@ const Login = (props) => {
                     width: "200px",
                     borderRadius: "20px",
                     margin: "0px auto",
+                    backgroundColor: "black"
                   }}
                   onClick={signup}
                 >
@@ -319,11 +244,7 @@ const Login = (props) => {
                   <li>Keep more than one address</li>
                   <li>Track orders and more</li>
                 </ul>
-                <Button
-                  variant="primary"
-                  style={{ width: "200px", borderRadius: "20px" }}
-                  onClick={() => changeTab("login")}
-                >
+                <Button variant="primary" style={{ width: "200px", borderRadius: "20px", backgroundColor: "black" }} onClick={() => changeTab("login")}>
                   Login
                 </Button>
               </Box>

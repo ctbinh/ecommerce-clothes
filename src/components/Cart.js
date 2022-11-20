@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { Container, Row, Col } from "react-grid-system";
 // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationContainer, NotificationManager } from "react-notifications";
 import Scrollbars from "react-scrollbars-custom";
 import RowOfTable from "./RowOfTable";
 import { Link } from "react-router-dom";
@@ -16,15 +13,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import CartItem from "./CartItem";
 
 const Cart = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
-  //   const location = useLocation();
-  //   const { cartt } = location.state;
-  //   const [cart, setCart] = useState(cartt);
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
@@ -37,78 +31,36 @@ const Cart = () => {
         NotificationManager.success("Success message", "Title here");
         break;
       case "warning":
-        NotificationManager.warning(
-          "Warning message",
-          "Close after 3000ms",
-          3000
-        );
+        NotificationManager.warning("Warning message", "Close after 3000ms", 3000);
         break;
       case "errorName":
-        NotificationManager.warning(
-          "Name only contains 3 - 14 characters",
-          "Error Name!",
-          3000
-        );
+        NotificationManager.warning("Name only contains 3 - 14 characters", "Error Name!", 3000);
         break;
       case "errorPhone":
-        NotificationManager.error(
-          "Phone only contains the numbers",
-          "Error Phone!",
-          3000
-        );
+        NotificationManager.error("Phone only contains the numbers", "Error Phone!", 3000);
         break;
       case "errorAddress":
-        NotificationManager.warning(
-          "Address only contains 3 - 30 characters",
-          "Error Address!",
-          3000
-        );
+        NotificationManager.warning("Address only contains 3 - 30 characters", "Error Address!", 3000);
         break;
       case "noItems":
-        NotificationManager.warning(
-          "There is no item in cart",
-          "Empty cart !!!",
-          2000
-        );
+        NotificationManager.warning("There is no item in cart", "Empty cart !!!", 2000);
         break;
       default:
         break;
     }
   };
-  const IsSure = () => {
-    confirmAlert({
-      title: "Are you sure !!!",
-      // message: 'Are you sure to delete !!!',
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => ClearAll(),
-        },
-        {
-          label: "No",
-          onClick: () => console.log("Ignore delete all product"),
-        },
-      ],
-    });
+  const removeItem = async (e, id) => {
+    e.preventDefault();
+    const res = await axios.delete(`http://localhost:8082/api/cart/${id}`, { withCredentials: true });
+    setCart(cart.filter((item) => item.id !== res.data));
   };
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost/ecommerce/backend/api/cart/finditems.php?user_id=${sessionStorage.getItem(
-          "user_id"
-        )}`
-      )
-      .then((response) => {
-        if (response.data.data) setCart(response.data.data);
-        setTotal(response.data.data.reduce((sum, product) => {
-          return sum + product.amount * product.price;
-        }, 0).toFixed(2))
-        console.log(response.data.message);
-      });
-    // const data = sessionStorage.getItem('user_id');
-    // if(data) {
-    //   setUser(data)
-    // }
+    const fetchCart = async () => {
+      const res = await axios.get("http://localhost:8082/api/cart", { withCredentials: true });
+      console.log(res.data);
+      setCart(res.data);
+    };
+    fetchCart();
   }, []);
   const ContainerNotification = (name, phone, address) => {
     if (cart.length === 0) {
@@ -128,82 +80,18 @@ const Cart = () => {
       return;
     }
   };
-  const ClearAll = () => {
-    setCart([]);
-    setTotal(0)
-    const data = {
-      user_id: sessionStorage.getItem("user_id"),
-    };
-    let config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    axios
-      .post(
-        "http://localhost/ecommerce/backend/api/cart/deleteAll.php",
-        data,
-        config
-      )
-      .then((response) => {
-        console.log(response.data);
-      });
-  };
   return (
     <div>
       <Header />
       <ContainerStyled fluid>
         <Row>
           <Col xl={7.5}>
-            <Title>Shopping Cart</Title>
-            <Row style={RowHeader}>
-              <Col md={7} sm={3} xs={3}>
-                Item
-              </Col>
-              <Col md={2} sm={3} xs={3}>
-                Price
-              </Col>
-              <Col md={1} sm={2} xs={2}>
-                Qty
-              </Col>
-              <CloseResponesive md={2} sm={3} xs={3}>
-                SubTotal
-              </CloseResponesive>
-            </Row>
-            <Line />
-            <Scrollbars
-              // style={{ height: 350, marginTop: 30 }}
-              style={Scrollbarstyled}
-              noScrollX
-            >
-              {cart.length !== 0 ? (
-                cart.map((product) => (
-                  <RowOfTable
-                    key={product.product_id}
-                    product={product}
-                    cart={cart}
-                    total={total}
-                    setTotal={setTotal}
-                  />
-                  // <RowOfTable product={product}/>
-                ))
-              ) : (
-                <NoItemInCart>( No Items In Your Cart )</NoItemInCart>
-              )}
-            </Scrollbars>
-            <Row>
-              <Col sm={6}>
-                <ButtonContinue onClick={() => navigate(-1)}>
-                  Continue Shopping
-                </ButtonContinue>
-              </Col>
-              <Col sm={6}>
-                {/* <ButtonClear onClick={ClearAll}> */}
-                <ButtonClear onClick={() => IsSure()}>
-                  Clear Shopping Cart
-                </ButtonClear>
-              </Col>
-            </Row>
+            <Title>Shopping cart</Title>
+            <ListItem>
+              {cart?.map((item) => {
+                return <CartItem item={item} removeItem={removeItem} />;
+              })}
+            </ListItem>
           </Col>
           <Col xl={4} style={ContainerSummary}>
             <Title>Summary</Title>
@@ -235,9 +123,7 @@ const Cart = () => {
                 <Ship>Order Total</Ship>
               </Col>
               <Col sm={2.5} xs={2.5}>
-                <ValueShip>
-                  ${total}
-                </ValueShip>
+                <ValueShip>${total}</ValueShip>
               </Col>
             </Row>
             <br />
@@ -250,28 +136,9 @@ const Cart = () => {
                 phone: phone,
               }}
             >
-              {name.length >= 3 &&
-                name.length <= 14 &&
-                address.length >= 3 &&
-                address.length <= 30 &&
-                cart.length !== 0 &&
-                !/\D/.test(phone) && (
-                  <ButtonCheckout>Proceed to Checkout</ButtonCheckout>
-                )}
+              {name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && cart.length !== 0 && !/\D/.test(phone) && <ButtonCheckout>Proceed to Checkout</ButtonCheckout>}
             </Link>
-            {/* {(name === "" || phone === "" || address === "") && <ButtonCheckout 
-                                disabled
-                        >
-                            Please fill all fields
-                        </ButtonCheckout>} */}
-            {!(
-              name.length >= 3 &&
-              name.length <= 14 &&
-              address.length >= 3 &&
-              address.length <= 30 &&
-              cart.length !== 0 &&
-              !/\D/.test(phone)
-            ) && (
+            {!(name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && cart.length !== 0 && !/\D/.test(phone)) && (
               <ButtonFill
                 // disabled
                 onClick={() => ContainerNotification(name, phone, address)}
@@ -280,22 +147,7 @@ const Cart = () => {
               </ButtonFill>
             )}
             <NotificationContainer />
-            {/* <ButtonCheckout>      
-                            <PayPalScriptProvider >
-                                Checkout with 
-                                <PayPalButtons
-                                style={{ layout: "vertical" }}
-                                fundingSource="paypal"
-                                />
-                            </PayPalScriptProvider>
-                        </ButtonCheckout>     */}
-            {name.length >= 3 &&
-              name.length <= 14 &&
-              address.length >= 3 &&
-              address.length <= 30 &&
-              !/\D/.test(phone) && (
-                <ButtonMultiple>Checkout with Multiple Address</ButtonMultiple>
-              )}
+            {name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && !/\D/.test(phone) && <ButtonMultiple>Checkout with Multiple Address</ButtonMultiple>}
           </Col>
         </Row>
       </ContainerStyled>
@@ -309,39 +161,10 @@ const Title = styled.div`
   letter-spacing: 1px;
   margin-bottom: 15px;
 `;
-const ButtonContinue = styled.button`
-  border-radius: 20px;
-  width: 180px;
-  height: 40px;
-  margin-top: 30px;
-  transition: all 0.3s;
-  border: solid #cccccc;
-  :hover {
-    background-color: #bbbbbb;
-    cursor: pointer;
-    /* transform: scale(1.01); */
-  }
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 20px;
-`;
-const ButtonClear = styled.button`
-  border-radius: 20px;
-  width: 180px;
-  height: 40px;
-  margin-top: 30px;
-  color: white;
-  background-color: #111111;
-  transition: all 0.3s;
-  border: solid #222222;
-  :hover {
-    background-color: #000000;
-    cursor: pointer;
-    /* transform: scale(1.01); */
-  }
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 20px;
+const ListItem = styled.ul`
+  overflow-y: scroll;
+  max-height: 500px;
+  overflow-x: hidden;
 `;
 const Line = styled.hr`
   /* margin-top: 10px; */
@@ -366,15 +189,7 @@ const Input = styled.input`
   border: solid #cccccc 1px;
   padding-left: 2%;
 `;
-const Scrollbarstyled = {
-  height: "47vh",
-};
 
-const RowHeader = {
-  fontSide: "120%",
-  fontWeight: "600",
-  marginBottom: "10px",
-};
 const ContainerSummary = {
   backgroundColor: "#C5D0FF",
   // backgroundColor: "red",

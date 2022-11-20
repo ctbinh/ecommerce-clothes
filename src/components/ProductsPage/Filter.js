@@ -9,22 +9,19 @@ const Filter = (props) => {
   function valuetext(value) {
     return `${value}°C`;
   }
-  // const [value, setValue] = useState([500, 1500]);
-  // const [ramFilter, setRamFilter] = useState([]);
-  const targetRam = (ram) => {
-    if (!props.ramFilter.includes(ram)) {
-      props.setRamFilter([...props.ramFilter, ram]);
+
+  const targetSize = (size) => {
+    if (!props.sizeFilter?.includes(size)) {
+      props.setSizeFilter([...props.sizeFilter, size]);
     } else {
-      props.setRamFilter(props.ramFilter.filter((r) => r !== ram));
+      props.setSizeFilter(props.sizeFilter.filter((r) => r !== size));
     }
   };
-  const targetBrand = (brand) => {
-    if (!props.brandsTaget.includes(brand.name)) {
-      props.setBrandsTaget([...props.brandsTaget, brand.name]);
+  const targetCategory = (category) => {
+    if (!props.categoryFilter?.includes(category)) {
+      props.setCategoryFilter([...props.categoryFilter, category]);
     } else {
-      props.setBrandsTaget(
-        props.brandsTaget.filter((brandName) => brandName !== brand.name)
-      );
+      props.setCategoryFilter(props.categoryFilter.filter((r) => r !== category));
     }
   };
   const applyFilter = () => {
@@ -36,15 +33,9 @@ const Filter = (props) => {
       return;
     }
     if (activeThumb === 0) {
-      props.setValue([
-        Math.min(newValue[0], props.value[1] - minDistance),
-        props.value[1],
-      ]);
+      props.setValue([Math.min(newValue[0], props.value[1] - minDistance), props.value[1]]);
     } else {
-      props.setValue([
-        props.value[0],
-        Math.max(newValue[1], props.value[0] + minDistance),
-      ]);
+      props.setValue([props.value[0], Math.max(newValue[1], props.value[0] + minDistance)]);
     }
   };
   const changeMin = (e) => {
@@ -52,6 +43,15 @@ const Filter = (props) => {
   };
   const changeMax = (e) => {
     props.setValue([props.value[0], e.target.value]);
+  };
+  const targetColor = (code) => {
+    if (props.colorTarget === code) {
+      props.setColorTarget("");
+      props.fetchProducts("filter_color", {color: ""});
+    } else {
+      props.setColorTarget(code);
+      props.fetchProducts("filter_color", {color: code});
+    }
   };
 
   return (
@@ -62,51 +62,40 @@ const Filter = (props) => {
         </Title>
         {props.show === 1 && <CloseIcon onClick={() => props.setShow(0)} />}
       </Row>
-      <Button
-        type="transparent"
-        text="Clear Filter"
-        onClick={() => props.clearFilter()}
-      />
+      <Button type="transparent" text="Clear Filter" onClick={() => props.clearFilter()} />
       <TypeFilter>
         <i class="fa fa-align-left" aria-hidden="true"></i> Categories
       </TypeFilter>
       <Ram>
-        <input
-          type="checkbox"
-          name="4gbram"
-          id="4gbram"
-          value="4GB"
-          checked={props.ramFilter.includes("4GB")}
-          onChange={() => targetRam("4GB")}
-        />
+        <input type="checkbox" name="MALE" id="MALE" value="MALE" checked={props.categoryFilter?.includes("MALE")} onChange={() => targetCategory("MALE")} />
+        <label>
+          <span>Male</span>
+          <span></span>
+        </label>
+      </Ram>
+      <Ram>
+        <input type="checkbox" name="FEMALE" id="FEMALE" value="FEMALE" checked={props.categoryFilter?.includes("FEMALE")} onChange={() => targetCategory("FEMALE")} />
+        <label>
+          <span>Female</span>
+          <span></span>
+        </label>
+      </Ram>
+      <Ram>
+        <input type="checkbox" name="UNIFORM" id="UNIFORM" value="UNIFORM" checked={props.categoryFilter?.includes("UNIFORM")} onChange={() => targetCategory("UNIFORM")} />
         <label>
           <span>Uniform</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="8gbram"
-          id="8gbram"
-          value="8GB"
-          checked={props.ramFilter.includes("8GB")}
-          onChange={() => targetRam("8GB")}
-        />
+        <input type="checkbox" name="FOOTBALL" id="FOOTBALL" value="FOOTBALL" checked={props.categoryFilter?.includes("FOOTBALL")} onChange={() => targetCategory("FOOTBALL")} />
         <label>
           <span>Football</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="16gbram"
-          id="16gbram"
-          value="16GB"
-          checked={props.ramFilter.includes("16GB")}
-          onChange={() => targetRam("16GB")}
-        />
+        <input type="checkbox" name="OTHER" id="OTHER" value="OTHER" checked={props.categoryFilter?.includes("OTHER")} onChange={() => targetCategory("OTHER")} />
         <label>
           <span>Others</span>
           <span></span>
@@ -126,7 +115,7 @@ const Filter = (props) => {
         }}
         getAriaLabel={() => "Minimum distance"}
         value={props.value}
-        max={3000}
+        max={500}
         onChange={handleChange}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}
@@ -134,102 +123,51 @@ const Filter = (props) => {
       />
       <Row>
         <p style={{ fontSize: "20px", color: "gray" }}>$</p>
-        <Input
-          type="text"
-          value={props.value[0]}
-          onChange={(e) => changeMin(e)}
-        ></Input>
+        <Input type="text" value={props.value[0]} onChange={(e) => changeMin(e)}></Input>
         <p style={{ fontSize: "24px", color: "gray" }}>-</p>
-        <Input
-          type="text"
-          value={props.value[1]}
-          onChange={(e) => changeMax(e)}
-        ></Input>
+        <Input type="text" value={props.value[1]} onChange={(e) => changeMax(e)}></Input>
       </Row>
       <TypeFilter>
         <i class="fa fa-align-left" aria-hidden="true"></i> Colors
       </TypeFilter>
-      <Brands>
-        {props.brands.map((brand, idx) => {
-          return (
-            // <Brand key={idx} className={props.brandsTaget.includes(brand.name) ? 'active':''} src={brand.img} alt='brand' id={brand.id} onClick={() => targetBrand(brand)}/>
-            <ColorItem
-              key={idx}
-              color="#363636"
-              className={props.brandsTaget.includes(brand.name) ? "active" : ""}
-              onClick={() => targetBrand(brand)}
-            />
-          );
+      <Colors>
+        {props.colors.map((color, idx) => {
+          return <ColorItem key={idx} color={color.code} className={props.colorTarget === color.code ? "active" : ""} onClick={() => targetColor(color.code)} />;
         })}
-      </Brands>
+      </Colors>
       <TypeFilter>
         <i class="fa fa-align-left" aria-hidden="true"></i> Size
       </TypeFilter>
       <Ram>
-        <input
-          type="checkbox"
-          name="4gbram"
-          id="4gbram"
-          value="4GB"
-          checked={props.ramFilter.includes("4GB")}
-          onChange={() => targetRam("4GB")}
-        />
+        <input type="checkbox" name="S" id="S" value="S" checked={props.sizeFilter?.includes("S")} onChange={() => targetSize("S")} />
         <label>
           <span>S</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="8gbram"
-          id="8gbram"
-          value="8GB"
-          checked={props.ramFilter.includes("8GB")}
-          onChange={() => targetRam("8GB")}
-        />
+        <input type="checkbox" name="M" id="M" value="M" checked={props.sizeFilter?.includes("M")} onChange={() => targetSize("M")} />
         <label>
           <span>M</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="16gbram"
-          id="16gbram"
-          value="16GB"
-          checked={props.ramFilter.includes("16GB")}
-          onChange={() => targetRam("16GB")}
-        />
+        <input type="checkbox" name="L" id="L" value="L" checked={props.sizeFilter?.includes("L")} onChange={() => targetSize("L")} />
         <label>
           <span>L</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="16gbram"
-          id="16gbram"
-          value="16GB"
-          checked={props.ramFilter.includes("16GB")}
-          onChange={() => targetRam("16GB")}
-        />
+        <input type="checkbox" name="XL" id="XL" value="XL" checked={props.sizeFilter?.includes("XL")} onChange={() => targetSize("XL")} />
         <label>
           <span>XL</span>
           <span></span>
         </label>
       </Ram>
       <Ram>
-        <input
-          type="checkbox"
-          name="16gbram"
-          id="16gbram"
-          value="16GB"
-          checked={props.ramFilter.includes("16GB")}
-          onChange={() => targetRam("16GB")}
-        />
+        <input type="checkbox" name="XXL" id="XXL" value="XXL" checked={props.sizeFilter?.includes("XXL")} onChange={() => targetSize("XXL")} />
         <label>
           <span>XXL</span>
           <span></span>
@@ -244,9 +182,13 @@ const Filter = (props) => {
 const ColorItem = styled.div`
   min-width: 20px;
   min-height: 20px;
+  border: 1px solid gray;
   background-color: ${($props) => ($props.color ? $props.color : "black")};
   border-radius: 100%;
   cursor: pointer;
+  &.active {
+    border: 3px solid #0156ff;
+  }
 `;
 const Row = styled.div`
   display: flex;
@@ -282,13 +224,9 @@ const Brand = styled.img`
   height: 60px;
   background-color: white;
   padding: 5px 10px;
-  &.active {
-    border: 1px solid #0156ff;
-  }
   :hover {
     cursor: pointer;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   }
   @media (max-width: 768px) {
     width: 24%;
@@ -296,7 +234,7 @@ const Brand = styled.img`
     box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
   }
 `;
-const Brands = styled.div`
+const Colors = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;

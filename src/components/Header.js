@@ -67,6 +67,7 @@ const Header = (props) => {
             <SearchBar className="searchbar">
               <SearchInput
                 type="text"
+                autoComplete="off"
                 name="search_product"
                 id="search_product"
                 value={searchVal}

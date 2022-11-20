@@ -129,7 +129,7 @@ const StoresPage = (props) => {
   const [countPage, setcountPage] = useState(0);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
-  const [value, setValue] = useState([0, 3000]);
+  const [value, setValue] = useState([0, 500]);
   const [ramFilter, setRamFilter] = useState([]);
   const changePage = (event, value) => {
     setcurrPage(value);
@@ -147,20 +147,13 @@ const StoresPage = (props) => {
     const indexFirst = indexLast - num;
     setproducts(products.slice(indexFirst, indexLast));
   };
-  // const filterBrand = (brand) => {
-  //   setcurrPage(1);
-  //   setBrandsTaget([brand.name]);
-  //   const productFiltered = data.filter((p) => p.brand === brand.name);
-  //   getProductPerPage(productFiltered);
-  //   setfilteredProducts(productFiltered);
-  //   setcountPage(Math.ceil(productFiltered.length / num));
-  // };
+
   const applyFilter = () => {
     if (
       brandsTaget.length === 0 &&
       ramFilter.length === 0 &&
       value[0] === 0 &&
-      value[1] === 3000
+      value[1] === 500
     ) {
       getProductPerPage(data);
       setfilteredProducts(data);
@@ -169,7 +162,7 @@ const StoresPage = (props) => {
       setcurrPage(1);
       const productFiltered = data.filter((p) => {
         const fBrand = brandsTaget.length !== 0;
-        const fPrice = value[0] !== 0 || value[1] !== 3000;
+        const fPrice = value[0] !== 0 || value[1] !== 500;
         const fRam = ramFilter.length !== 0;
         if (!fBrand && !fPrice) {
           return (
@@ -237,7 +230,7 @@ const StoresPage = (props) => {
   const clearFilter = () => {
     setBrandsTaget([]);
     setRamFilter([]);
-    setValue([0, 3000]);
+    setValue([0, 500]);
     getProductPerPage(data);
     setfilteredProducts(data);
     setcountPage(Math.ceil(data.length / num));

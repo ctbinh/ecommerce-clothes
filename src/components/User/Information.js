@@ -6,10 +6,7 @@ import ImageUploading from "react-images-uploading";
 import { GrEdit } from "react-icons/gr";
 import axios from "axios";
 import swal from "sweetalert";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
+import { NotificationContainer, NotificationManager } from "react-notifications";
 export default function Information(props) {
   const [images, setImages] = useState([]);
   const [userInfor, setUserInfor] = useState([]);
@@ -22,30 +19,22 @@ export default function Information(props) {
     formData.append("file", imageList[0].file);
     formData.append("api_key", 174989952789425);
     formData.append("upload_preset", "iinnk03t");
-    const res = await axios.post(
-      "https://api.cloudinary.com/v1_1/dd8b69mls/image/upload",
-      formData
-    );
+    const res = await axios.post("https://api.cloudinary.com/v1_1/dd8b69mls/image/upload", formData);
     const sendUpImage = (url) => {
       const data = {
         user_id: sessionStorage.getItem("user_id"),
         url_avt: url,
       };
-      axios
-        .post("http://localhost/ecommerce/backend/api/user/updateImg.php", data)
-        .then((response) => {
-          console.log(response);
-        });
+      axios.post("http://localhost/ecommerce/backend/api/user/updateImg.php", data).then((response) => {
+        console.log(response);
+      });
     };
     await sendUpImage(res.data.url);
   };
   useEffect(() => {
     const fetchUser = async () => {
-      const id = sessionStorage.getItem("user_id");
-      const res = await axios.get(
-        "http://localhost/ecommerce/backend/api/user/getUser.php?user_id=" + id
-      );
-      setUserInfor(res.data.data[0]);
+      const res = await axios.get("http://localhost:8082/api/users/info", { withCredentials: true });
+      setUserInfor(res.data);
     };
     fetchUser();
   }, []);
@@ -64,8 +53,7 @@ export default function Information(props) {
     });
   };
   const onSave = () => {
-    let re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(userInfor.email)) {
       NotificationManager.error("Email not true !!!", "Error Email!", 3000);
       return;
@@ -76,11 +64,9 @@ export default function Information(props) {
       user_id: sessionStorage.getItem("user_id"),
     };
     console.log("data->>>>>", data);
-    axios
-      .post("http://localhost/ecommerce/backend/api/user/update.php", data)
-      .then((response) => {
-        console.log(response);
-      });
+    axios.post("http://localhost/ecommerce/backend/api/user/update.php", data).then((response) => {
+      console.log(response);
+    });
   };
   return (
     <div>
@@ -96,61 +82,38 @@ export default function Information(props) {
               // maxNumber={maxNumber}
               dataURLKey="data_url"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <ContainerEdit className="upload__image-wrapper">
                   {imageList.length === 0 && (
                     <ContainerImg>
-                      <ImgProduct src={userInfor["url_avt"]} alt="UserImage" />
+                      <ImgProduct src={userInfor.avatarUrl ?? "https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"} alt="UserImage" />
                     </ContainerImg>
                   )}
-                  {imageList.map((image, index) => (
-                    // <div key={index} className="image-item">
-                    //     <img src={image.data_url} alt="" width="100" />
-                    // </div>
-                    <ContainerImg key={index}>
-                      <ImgProduct src={image.data_url} alt="UserImage" />
-                    </ContainerImg>
-                  ))}
-                  <ButtonEdit
-                    style={isDragging ? { color: "red" } : null}
-                    onClick={onImageUpload}
-                    {...dragProps}
-                  >
+                  {/* <ButtonEdit style={isDragging ? { color: "red" } : null} onClick={onImageUpload} {...dragProps}>
                     <IconEdit size={"3vw"} />
-                  </ButtonEdit>
+                  </ButtonEdit> */}
                 </ContainerEdit>
               )}
             </ImageUploading>
           </ColStyled>
           <Col>
-            <Row>
-              <Col sm={3}>
-                <NameInput>Username: </NameInput>{" "}
-              </Col>
-              <Col sm={9}>
-                <NameInput>{userInfor.username}</NameInput>
-              </Col>
-            </Row>
+            <ContainerInput>
+              <Row>
+                <Col lg={2.5}>
+                  <NameInput>Avatar url</NameInput>
+                </Col>
+                <Col lg={9.5}>
+                  <Input type="text" name="fName" placeholder={userInfor.avatarUrl} onChange={update} />
+                </Col>
+              </Row>
+            </ContainerInput>
             <ContainerInput>
               <Row>
                 <Col lg={2.5}>
                   <NameInput>First Name</NameInput>
                 </Col>
                 <Col lg={9.5}>
-                  <Input
-                    type="text"
-                    name="fName"
-                    placeholder={userInfor.fName}
-                    onChange={update}
-                  />
+                  <Input type="text" name="fName" placeholder={userInfor.firstName} onChange={update} />
                 </Col>
               </Row>
             </ContainerInput>
@@ -160,12 +123,7 @@ export default function Information(props) {
                   <NameInput>Last Name</NameInput>
                 </Col>
                 <Col lg={9.5}>
-                  <Input
-                    type="text"
-                    name="lName"
-                    placeholder={userInfor.lName}
-                    onChange={update}
-                  />
+                  <Input type="text" name="lName" placeholder={userInfor.lastName} onChange={update} />
                 </Col>
               </Row>
             </ContainerInput>
@@ -175,12 +133,7 @@ export default function Information(props) {
                   <NameInput type="email">Email</NameInput>
                 </Col>
                 <Col lg={9.5}>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder={userInfor.email}
-                    onChange={update}
-                  />
+                  <Input type="email" name="email" placeholder={userInfor.email} onChange={update} />
                 </Col>
               </Row>
             </ContainerInput>
@@ -190,12 +143,7 @@ export default function Information(props) {
                   <NameInput>Phone</NameInput>
                 </Col>
                 <Col lg={9.5}>
-                  <Input
-                    type="number"
-                    name="phone"
-                    placeholder={userInfor.phone}
-                    onChange={update}
-                  />
+                  <Input type="number" name="phone" placeholder={userInfor.phone} onChange={update} />
                 </Col>
               </Row>
             </ContainerInput>
@@ -204,15 +152,7 @@ export default function Information(props) {
                 <NameInput>Birthday</NameInput>
               </Col>
               <Col lg={9.5}>
-                <Input
-                  type="date"
-                  id="start"
-                  name="birthday"
-                  value={userInfor.birthday}
-                  min="1990-01-01"
-                  max="2022-12-31"
-                  onChange={update}
-                />
+                <Input type="date" id="start" name="birthday" value={userInfor.birthday} min="1990-01-01" max="2022-12-31" onChange={update} />
               </Col>
             </Row>
             <NotificationContainer />

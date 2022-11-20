@@ -20,19 +20,21 @@ const Home = () => {
     <div>
       <Header />
       {/* Change background image in line 19 */}
-      <div className="bg-[#878381] h-[600px] flex  flex-col justify-center items-center text-white">
-        <h1 className="text-[15px]">NEW COLLECTION</h1>
-        <h1 className="text-[40px]">FIND YOUR</h1>
-        <h1 className="text-[70px]">PERFECT</h1>
-        <p className="mt-3">Uncompromising in style, quality and perfomance</p>
-        <button
-          onClick={() => {
-            navigation("/products");
-          }}
-          className="mt-3 px-[10px] py-[15px] bg-white text-black"
-        >
-          SHOP THE COLLECTION
-        </button>
+      <div className="bg-landing-background bg-cover h-[600px] ">
+        <div  className="flex backdrop-brightness-75 flex-col h-[600px] justify-center items-center text-white">
+          <h1 className="text-[15px]">NEW COLLECTION</h1>
+          <h1 className="text-[40px]">FIND YOUR</h1>
+          <h1 className="text-[70px]">PERFECT</h1>
+          <p className="mt-3">Uncompromising in style, quality and perfomance</p>
+          <button
+            onClick={() => {
+              navigation("/products");
+            }}
+            className="mt-3 px-[10px] py-[15px] bg-white text-black"
+          >
+            SHOP THE COLLECTION
+          </button>
+        </div>
       </div>
       <div className="bg-black grid  grid-cols-3 px-[200px] gap-[30px]">
         <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
@@ -46,10 +48,7 @@ const Home = () => {
             SHOP THE COLLECTION
           </button>
           <h1 className="text-[20px] font-bold mt-[10px]">UNIFORM</h1>
-          <p className="mt-[15px]">
-            See our top-picks for jean jackets that are oversized,distressed and
-            downright cool.
-          </p>
+          <p className="mt-[15px]">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
 
         <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
@@ -63,10 +62,7 @@ const Home = () => {
             SHOP THE COLLECTION
           </button>
           <h1 className="text-[20px] font-bold mt-[10px]">UNIFORM</h1>
-          <p className="mt-[15px]">
-            See our top-picks for jean jackets that are oversized,distressed and
-            downright cool.
-          </p>
+          <p className="mt-[15px]">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
 
         <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
@@ -80,10 +76,7 @@ const Home = () => {
             SHOP THE COLLECTION
           </button>
           <h1 className="text-[20px] font-bold mt-[10px]">UNIFORM</h1>
-          <p className="mt-[15px]">
-            See our top-picks for jean jackets that are oversized,distressed and
-            downright cool.
-          </p>
+          <p className="mt-[15px]">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
       </div>
 

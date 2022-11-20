@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Pagination,
-  Select,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Pagination, Select } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
@@ -12,289 +6,196 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../Header";
 import Footer from "../Footer";
-import images from "../images";
 import Filter from "./Filter";
 import Product from "./Product";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
+import { useCallback } from "react";
 
 let data = [];
 const ProductsPage = (props) => {
-  const brands = [
+  const colors = [
     {
       id: 0,
-      name: "ACER",
-      img: images.acer,
+      code: "#ff0000",
     },
     {
       id: 1,
-      name: "ASUS",
-      img: images.asus,
+      code: "#fff700",
     },
     {
       id: 2,
-      name: "GIGABYTE",
-      img: images.gigabyte,
+      code: "#ffcb94",
     },
     {
       id: 3,
-      name: "HP",
-      img: images.hp,
+      code: "#cf811b",
     },
     {
       id: 4,
-      name: "LG",
-      img: images.lg,
+      code: "#058fff",
     },
     {
       id: 5,
-      name: "MSI",
-      img: images.msi,
+      code: "#03d603",
     },
     {
       id: 6,
-      name: "RAZER",
-      img: images.razer,
+      code: "#4c6b17",
+    },
+    {
+      id: 7,
+      code: "#000000",
+    },
+    {
+      id: 8,
+      code: "#ffffff",
+    },
+    {
+      id: 9,
+      code: "#cfcbcf",
+    },
+    {
+      id: 10,
+      code: "#d10bd1",
     },
   ];
   let navigate = useNavigate();
   const [show, setShow] = useState(0);
-  const [num, setNum] = useState(20);
+  const [numPerPage, setNumPerPage] = useState(10);
   const [display, setDisplay] = useState(0);
-  const [brandsTaget, setBrandsTaget] = useState([]);
   const [currPage, setcurrPage] = useState(1);
-  const [products, setproducts] = useState([
-    {
-      id: 1,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover:
-        "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/a599d0abc933427cb24daede010a9047_9366/Ao_Thun_Ba_La_Essentials_Manchester_United_DJen_HB4373_21_model.jpg",
-    },
-    {
-      id: 2,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover:
-        "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/3369edd293164a678d6aae6100a9e092_9366/Ao_DJau_Thu_Ba_Manchester_United_22-23_mau_xanh_la_HE2981_21_model.jpg",
-    },
-    {
-      id: 3,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover:
-        "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/edc50f58129041be80b2ae29011a3119_9366/Ao_DJau_San_Nha_Manchester_United_22-23_DJo_H64049_01_laydown.jpg",
-    },
-    {
-      id: 4,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover:
-        "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/2700b53701664eb8b277ae2f00df6e5d_9366/Ao_DJau_San_Khach_Manchester_United_22-23_trang_H13880_21_model.jpg",
-    },
-    {
-      id: 5,
-      name: "Rick & Morty T-shirt",
-      price: 20,
-      img_cover:
-        "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/a599d0abc933427cb24daede010a9047_9366/Ao_Thun_Ba_La_Essentials_Manchester_United_DJen_HB4373_21_model.jpg",
-    },
-  ]);
-  const [countPage, setcountPage] = useState(0);
+  const [products, setproducts] = useState([]);
+  const [countPage, setcountPage] = useState(5);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
-  const [value, setValue] = useState([0, 3000]);
-  const [ramFilter, setRamFilter] = useState([]);
+  const [value, setValue] = useState([0, 500]);
+  const [sizeFilter, setSizeFilter] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState([]);
+  const [colorTarget, setColorTarget] = useState("");
   const changePage = (event, value) => {
     setcurrPage(value);
+    fetchProducts("", {payload: null, page: value, numPerPage: numPerPage});
   };
   const changeDisplay = (value) => {
     setDisplay(value);
   };
   const changeNumPerPage = (event) => {
     setcurrPage(1);
-    setNum(event.target.value);
-    setcountPage(Math.ceil(filteredProducts.length / event.target.value));
+    setNumPerPage(event.target.value);
+    fetchProducts("", {numPerPage: event.target.value, page: 1});
+    // setcountPage(Math.ceil(filteredProducts.length / event.target.value));
   };
   const getProductPerPage = (products) => {
-    const indexLast = currPage * num;
-    const indexFirst = indexLast - num;
+    const indexLast = currPage * numPerPage;
+    const indexFirst = indexLast - numPerPage;
     setproducts(products.slice(indexFirst, indexLast));
   };
-  // const filterBrand = (brand) => {
-  //   setcurrPage(1);
-  //   setBrandsTaget([brand.name]);
-  //   const productFiltered = data.filter((p) => p.brand === brand.name);
-  //   getProductPerPage(productFiltered);
-  //   setfilteredProducts(productFiltered);
-  //   setcountPage(Math.ceil(productFiltered.length / num));
-  // };
   const applyFilter = () => {
-    if (
-      brandsTaget.length === 0 &&
-      ramFilter.length === 0 &&
-      value[0] === 0 &&
-      value[1] === 3000
-    ) {
-      getProductPerPage(data);
-      setfilteredProducts(data);
-      setcountPage(Math.ceil(data.length / num));
-    } else {
-      setcurrPage(1);
-      const productFiltered = data.filter((p) => {
-        const fBrand = brandsTaget.length !== 0;
-        const fPrice = value[0] !== 0 || value[1] !== 3000;
-        const fRam = ramFilter.length !== 0;
-        if (!fBrand && !fPrice) {
-          return (
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else if (!fBrand && !fRam) {
-          return p.price >= value[0] && p.price <= value[1];
-        } else if (!fPrice && !fRam) {
-          return brandsTaget.indexOf(p.brand) > -1;
-        } else if (!fBrand) {
-          return (
-            p.price >= value[0] &&
-            p.price <= value[1] &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else if (!fRam) {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            p.price >= value[0] &&
-            p.price <= value[1]
-          );
-        } else if (!fPrice) {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1 &&
-            p.price >= value[0] &&
-            p.price <= value[1]
-          );
-        }
-      });
-      getProductPerPage(productFiltered);
-      setfilteredProducts(productFiltered);
-      setcountPage(Math.ceil(productFiltered.length / num));
-    }
+    fetchProducts("", {payload: null});
   };
   const clearFilter = () => {
-    setBrandsTaget([]);
-    setRamFilter([]);
-    setValue([0, 3000]);
-    getProductPerPage(data);
-    setfilteredProducts(data);
-    setcountPage(Math.ceil(data.length / num));
+    fetchProducts("clear", {});
   };
   const targetProduct = (id) => {
     navigate("/detail/" + id);
   };
-
+  const fetchProducts = async (action, params) => {
+    const res = await axios.post("http://localhost:8082/api/products", getBodyFilter(action, params), { withCredentials: true });
+    data = res.data;
+    // setcountPage(Math.ceil(data.length / num));
+    setfilteredProducts(data);
+    setproducts(data);
+  };
+  const getBodyFilter = useCallback(
+    (action, params) => {
+      const color = params.color;
+      const _page = params.page ?? currPage;
+      const _numPerPage = params.numPerPage ?? numPerPage;
+      data = {
+        pageNumber: _page,
+        numOfItemsPerPage: _numPerPage,
+        filter: {
+          priceRange: {
+            from: value[0],
+            to: value[1],
+          },
+        },
+        order: {
+          order: "asc",
+          criterion: "asc",
+        },
+        fromDate: "11/17/2022",
+      };
+      if (action === "clear") {
+        setValue([0, 500]);
+        setCategoryFilter([]);
+        setSizeFilter([]);
+        setColorTarget("");
+        data.filter = null;
+      } else if (action === "filter_color") {
+        if (color !== "") {
+          data.filter.color = color;
+        }
+      } else {
+        if (sizeFilter.length > 0) {
+          data.filter.size = sizeFilter;
+        }
+        if (categoryFilter.length > 0) {
+          data.filter.genders = categoryFilter;
+        }
+        if (colorTarget !== "") {
+          data.filter.color = colorTarget;
+        }
+      }
+      return data;
+    },
+    [categoryFilter, colorTarget, sizeFilter, value, currPage, numPerPage]
+  );
   useEffect(() => {
     const fetchProducts = async () => {
       if (isFirst) {
-        const res = await axios.get(
-          "http://localhost/ecommerce/backend/api/product/read.php"
-        );
-        data = res.data.data.filter((p) => p.isDisabled === 0);
-        setcountPage(Math.ceil(data.length / num));
+        const res = await axios.post("http://localhost:8082/api/products", getBodyFilter("", {page: 1, numPerPage}), { withCredentials: true });
+        data = res.data;
         setfilteredProducts(data);
       }
-      const indexLast = currPage * num;
-      const indexFirst = indexLast - num;
-      const pds = filteredProducts.slice(indexFirst, indexLast);
-      // setproducts(pds);
+      setproducts(filteredProducts);
     };
     fetchProducts();
     setIsFirst(false);
-  }, [currPage, num, filteredProducts, isFirst]);
+  }, [filteredProducts, isFirst, getBodyFilter, numPerPage]);
 
   return (
     <>
-      <Header
-        setfilteredProducts={setfilteredProducts}
-        getProductPerPage={getProductPerPage}
-        setcountPage={setcountPage}
-        num={num}
-        data={data}
-        setcurrPage={setcurrPage}
-      />
+      <Header setfilteredProducts={setfilteredProducts} getProductPerPage={getProductPerPage} setcountPage={setcountPage} num={numPerPage} data={data} setcurrPage={setcurrPage} />
       <Container>
         <Carousel>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="https://www.uniformhouse.com/images/Custom/banner1.jpg"
-              alt="poster"
-            />
+            <Poster src="https://www.uniformhouse.com/images/Custom/banner1.jpg" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="http://www.e-khadigarments.com/images/banner6.png"
-              alt="poster"
-            />
+            <Poster src="http://www.e-khadigarments.com/images/banner6.png" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg"
-              alt="poster"
-            />
+            <Poster src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg" alt="poster" />
           </Carousel.Item>
         </Carousel>
-        {/* <Brands>
-          {brands.map((brand, idx) => {
-            return (
-              <Brand
-                key={idx}
-                src={brand.img}
-                alt="brand"
-                onClick={() => filterBrand(brand)}
-              />
-            );
-          })}
-        </Brands> */}
         <Content>
           <BoxFilter show={show}>
             <Filter
-              brands={brands}
-              brandsTaget={brandsTaget}
-              setBrandsTaget={setBrandsTaget}
+              colors={colors}
               value={value}
               setValue={setValue}
-              ramFilter={ramFilter}
-              setRamFilter={setRamFilter}
+              sizeFilter={sizeFilter}
+              setSizeFilter={setSizeFilter}
+              categoryFilter={categoryFilter}
+              setCategoryFilter={setCategoryFilter}
+              colorTarget={colorTarget}
+              setColorTarget={setColorTarget}
               setShow={setShow}
               applyFilter={applyFilter}
+              fetchProducts={fetchProducts}
               clearFilter={clearFilter}
               show={show}
             />
@@ -306,14 +207,7 @@ const ProductsPage = (props) => {
                 <div className="option">
                   <FormControl sx={{ m: 1 }} size="small">
                     <InputLabel id="show">Show</InputLabel>
-                    <Select
-                      labelId="show"
-                      id="show"
-                      value={num}
-                      label="Show"
-                      style={{borderRadius: '0'}}
-                      onChange={changeNumPerPage}
-                    >
+                    <Select labelId="show" id="show" value={numPerPage} label="Show" style={{ borderRadius: "0" }} onChange={changeNumPerPage}>
                       <MenuItem value={10}>10 per page</MenuItem>
                       <MenuItem value={20}>20 per page</MenuItem>
                       <MenuItem value={30}>30 per page</MenuItem>
@@ -338,15 +232,7 @@ const ProductsPage = (props) => {
             </Row>
             <Pd>
               {products.map((product, idx) => {
-                return (
-                  <Product
-                    key={idx}
-                    idx={idx}
-                    display={display}
-                    product={product}
-                    onClick={targetProduct}
-                  />
-                );
+                return <Product key={idx} idx={idx} display={display} product={product} onClick={targetProduct} />;
               })}
             </Pd>
             <div
@@ -357,12 +243,7 @@ const ProductsPage = (props) => {
                 margin: "20px 0",
               }}
             >
-              <Pagination
-                count={countPage}
-                color="primary"
-                onChange={changePage}
-                page={currPage}
-              />
+              <Pagination count={countPage} color="primary" onChange={changePage} page={currPage} />
             </div>
           </Products>
         </Content>
@@ -390,8 +271,7 @@ const BoxFilter = styled.div`
     transition: all 0.5s ease;
     z-index: 999;
     margin-top: 0;
-    box-shadow: ${(props) =>
-      props.show ? "rgba(0, 0, 0, 0.4) 0px 30px 90px" : ""};
+    box-shadow: ${(props) => (props.show ? "rgba(0, 0, 0, 0.4) 0px 30px 90px" : "")};
   }
 `;
 const Icon = styled.div`

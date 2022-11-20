@@ -12,34 +12,22 @@ const Product = (props) => {
   
   const product = props.product;
   return (
-    <Container key={props.idx} display={props.display} onClick={()=>props.onClick(product.product_id)}>
-      {/* {product.amount > 0 ?
-        <Status display={props.display}>
-          <i className="fa fa-check-circle" aria-hidden="true"></i> in stock
-        </Status> : <Status display={props.display} color="#cf2115">
-          <i className="fa fa-check-circle" aria-hidden="true"></i> out of stock
-        </Status>} */}
+    <Container key={props.idx} display={props.display} onClick={()=>props.onClick(product.id)}>
       <Box display={props.display}>
         <div>
           <Image display={props.display}>
-            <img src={product.img_cover} style={{ maxHeight: '100%' }} alt="laptop" />
+            <img src={product.coverImageUrl} style={{ maxHeight: '100%' }} alt="coverimage" />
           </Image>
-          {/* <Rate display={props.display}>
-            <Rating size='small' name="read-only" value={product.rating} readOnly/>
-            <Text style={{fontSize: '13px', color: '#a6a6a6'}}>Reviews ({product.num_reviewer})</Text>
-          </Rate> */}
         </div>
         <div className='detail'>
           <Name display={props.display}>{product.name}</Name>
           {props.display === 1 && <Desc>{product.description}</Desc>}
           <Box display={props.display}>
-            {/* <Text style={{color: 'gray', marginRight:'10px'}}><s>{'$' + product.old_price}</s></Text> */}
-            <Text style={{fontSize: '20px'}}><b>{'$' + product.price}</b></Text>
+            <Text style={{fontSize: '20px'}}><b>{'$' + product.currentPrice}</b></Text>
           </Box>
           {props.display === 1 && 
             <ComboBtn>
               <Button text='Add to cart' type='primary sm'/>
-              <FavoriteTwoToneIcon sx={{ color: grey[500] }} onClick={(e)=>addToWishlist(e)}/>
             </ComboBtn>
           }
         </div>

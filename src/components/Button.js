@@ -10,7 +10,6 @@ const Button = (props) => {
 const Btn = styled.button`
   width: 100%;
   padding: 5px;
-  /* background: #0156FF; */
   background-color: #282828;
   color: #FFFFFF;
   text-transform: uppercase;
@@ -31,7 +30,7 @@ const Btn = styled.button`
     padding: 2px;
   }
   &.primary{
-    background: transparent;
+    background-color: black;
     border: 1px solid #BDBDBD;
     color: #0156FF;
     text-transform: uppercase;
