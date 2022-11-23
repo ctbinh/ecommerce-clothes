@@ -2,7 +2,7 @@ import React from "react";
 
 const Review = ({rating}) => {
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
+    <div className="mx-auto max-w-2xl px-4 pt-3 sm:px-6 lg:grid lg:max-w-7xl lg:gap-x-8 lg:px-8">
       <div class="flex items-center mb-4 space-x-4">
         <img class="w-10 h-10 rounded-full" src={rating.userAvatarUrl??"https://i.pinimg.com/736x/fa/75/d3/fa75d35a0d10fac453109380a62b9b35.jpg"} alt="" />
         <div class="space-y-1 font-medium dark:text-black">

@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { NotificationManager } from "react-notifications";
 import { useParams } from "react-router-dom";
 import Footer from "../Footer";
 import Header from "../Header";
@@ -14,15 +15,16 @@ const DetailProduct = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const addToCart = async (e, productId) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = { productId, quantity: quantity, color: selectedColor, size: selectedSize };
     const res = await axios.post("http://localhost:8082/api/cart", data, { withCredentials: true });
-    console.log(res);
+    if (res.status === 200) {
+      NotificationManager.success("Added item to cart", "Success", 2000);
+    }
   };
   useEffect(() => {
     const fetchProduct = async () => {
       const res = await axios.get(`http://localhost:8082/api/products/${product_id}`, { withCredentials: true });
-      console.log(res.data);
       setProduct(res.data);
     };
     fetchProduct();
@@ -244,8 +246,12 @@ const DetailProduct = () => {
           </div>
         </div>
       </div>
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:grid lg:max-w-7xl lg:gap-x-8 lg:px-8">
+        <h1 className="mb-4 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Reviews</h1>
+        <hr />
+      </div>
       {product?.ratings.map((rating) => {
-        return (<Review rating={rating} key={rating.id}/>)
+        return <Review rating={rating} key={rating.id} />;
       })}
       <Footer />
     </div>

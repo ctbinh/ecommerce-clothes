@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Pagination,
-  Select,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Pagination, Select } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
@@ -142,119 +136,28 @@ const StoresPage = (props) => {
     setNum(event.target.value);
     setcountPage(Math.ceil(filteredProducts.length / event.target.value));
   };
-  const getProductPerPage = (products) => {
-    const indexLast = currPage * num;
-    const indexFirst = indexLast - num;
-    setproducts(products.slice(indexFirst, indexLast));
-  };
-
-  const applyFilter = () => {
-    if (
-      brandsTaget.length === 0 &&
-      ramFilter.length === 0 &&
-      value[0] === 0 &&
-      value[1] === 500
-    ) {
-      getProductPerPage(data);
-      setfilteredProducts(data);
-      setcountPage(Math.ceil(data.length / num));
-    } else {
-      setcurrPage(1);
-      const productFiltered = data.filter((p) => {
-        const fBrand = brandsTaget.length !== 0;
-        const fPrice = value[0] !== 0 || value[1] !== 500;
-        const fRam = ramFilter.length !== 0;
-        if (!fBrand && !fPrice) {
-          return (
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else if (!fBrand && !fRam) {
-          return p.price >= value[0] && p.price <= value[1];
-        } else if (!fPrice && !fRam) {
-          return brandsTaget.indexOf(p.brand) > -1;
-        } else if (!fBrand) {
-          return (
-            p.price >= value[0] &&
-            p.price <= value[1] &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else if (!fRam) {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            p.price >= value[0] &&
-            p.price <= value[1]
-          );
-        } else if (!fPrice) {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1
-          );
-        } else {
-          return (
-            brandsTaget.indexOf(p.brand) > -1 &&
-            ramFilter.indexOf(
-              p.ram.substring(0, 4).includes("4GB")
-                ? "4GB"
-                : p.ram.substring(0, 4).includes("8GB")
-                ? "8GB"
-                : "16GB"
-            ) > -1 &&
-            p.price >= value[0] &&
-            p.price <= value[1]
-          );
-        }
-      });
-      getProductPerPage(productFiltered);
-      setfilteredProducts(productFiltered);
-      setcountPage(Math.ceil(productFiltered.length / num));
-    }
-  };
-  const clearFilter = () => {
-    setBrandsTaget([]);
-    setRamFilter([]);
-    setValue([0, 500]);
-    getProductPerPage(data);
-    setfilteredProducts(data);
-    setcountPage(Math.ceil(data.length / num));
-  };
-  const targetProduct = (id) => {
-    navigate("/detail/" + id);
-  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchStores = async () => {
       if (isFirst) {
-        const res = await axios.get(
-          "http://localhost/ecommerce/backend/api/product/read.php"
+        const res = await axios.post(
+          "http://localhost:8082/api/stores",
+          {
+            pageNumber: 1,
+            numOfItemsPerPage: 25,
+          },
+          { withCredentials: true }
         );
-        data = res.data.data.filter((p) => p.isDisabled === 0);
+        data = res.data;
         setcountPage(Math.ceil(data.length / num));
         setfilteredProducts(data);
       }
       const indexLast = currPage * num;
       const indexFirst = indexLast - num;
       const pds = filteredProducts.slice(indexFirst, indexLast);
-      // setproducts(pds);
+      setproducts(pds);
     };
-    fetchProducts();
+    fetchStores();
     setIsFirst(false);
   }, [currPage, num, filteredProducts, isFirst]);
 
@@ -262,7 +165,7 @@ const StoresPage = (props) => {
     <>
       <Header
         setfilteredProducts={setfilteredProducts}
-        getProductPerPage={getProductPerPage}
+        // getProductPerPage={getProductPerPage}
         setcountPage={setcountPage}
         num={num}
         data={data}
@@ -271,36 +174,15 @@ const StoresPage = (props) => {
       <Container>
         <Carousel>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="https://www.uniformhouse.com/images/Custom/banner1.jpg"
-              alt="poster"
-            />
+            <Poster src="https://www.uniformhouse.com/images/Custom/banner1.jpg" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="http://www.e-khadigarments.com/images/banner6.png"
-              alt="poster"
-            />
+            <Poster src="http://www.e-khadigarments.com/images/banner6.png" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster
-              src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg"
-              alt="poster"
-            />
+            <Poster src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg" alt="poster" />
           </Carousel.Item>
         </Carousel>
-        {/* <Brands>
-            {brands.map((brand, idx) => {
-              return (
-                <Brand
-                  key={idx}
-                  src={brand.img}
-                  alt="brand"
-                  onClick={() => filterBrand(brand)}
-                />
-              );
-            })}
-          </Brands> */}
         <Content>
           <Products>
             <Row>
@@ -309,14 +191,7 @@ const StoresPage = (props) => {
                 <div className="option">
                   <FormControl sx={{ m: 1 }} size="small">
                     <InputLabel id="show">Show</InputLabel>
-                    <Select
-                      labelId="show"
-                      id="show"
-                      value={num}
-                      label="Show"
-                      style={{ borderRadius: "0" }}
-                      onChange={changeNumPerPage}
-                    >
+                    <Select labelId="show" id="show" value={num} label="Show" style={{ borderRadius: "0" }} onChange={changeNumPerPage}>
                       <MenuItem value={10}>10 per page</MenuItem>
                       <MenuItem value={20}>20 per page</MenuItem>
                       <MenuItem value={30}>30 per page</MenuItem>
@@ -341,14 +216,7 @@ const StoresPage = (props) => {
             </Row>
             <Pd>
               {products.map((product, idx) => {
-                return (
-                  <Product
-                    key={idx}
-                    idx={idx}
-                    display={display}
-                    product={product}
-                  />
-                );
+                return <Product key={idx} idx={idx} display={display} product={product} />;
               })}
             </Pd>
             <div
@@ -359,12 +227,7 @@ const StoresPage = (props) => {
                 margin: "20px 0",
               }}
             >
-              <Pagination
-                count={countPage}
-                color="primary"
-                onChange={changePage}
-                page={currPage}
-              />
+              <Pagination count={countPage} color="primary" onChange={changePage} page={currPage} />
             </div>
           </Products>
         </Content>
@@ -375,9 +238,10 @@ const StoresPage = (props) => {
 };
 
 const Pd = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  width: 100%;
+  display: grid;
+  gap: 1.2%;
+  grid-template-columns: 19% 19% 19% 19% 19%;
 `;
 
 const Icon = styled.div`
@@ -423,45 +287,13 @@ const Products = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
+  align-items: center;
+  /* margin-left: 5px; */
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 0;
   }
 `;
-
-// const Brand = styled.img`
-//   background-color: white;
-//   width: 120px;
-//   height: 60px;
-//   padding: 0px 10px;
-//   margin: 10px 5px 0px 5px;
-//   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-//     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-//   :hover {
-//     cursor: pointer;
-//     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-//   }
-//   @media (max-width: 1024px) {
-//     width: 100px;
-//     padding: 0px 5px;
-//   }
-//   @media (max-width: 768px) {
-//     width: 95px;
-//   }
-// `;
-
-// const Brands = styled.div`
-//   margin: 10px 0;
-//   padding-bottom: 10px;
-//   display: flex;
-//   flex-direction: row;
-//   border: 1px solid #e5e5e5;
-//   border-width: 2px 0 2px 0;
-//   display: flex;
-//   /* justify-content: space-between; */
-//   flex-wrap: wrap;
-// `;
 
 const Poster = styled.img`
   height: 350px;

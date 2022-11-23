@@ -4,142 +4,118 @@ import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import swal from "sweetalert";
 
+const token = "9891ae72-415a-11ed-8636-7617f3863de9";
+const shopId = "3307734";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [targetTypeOrders, setTargetTypeOrders] = useState("Pending");
-  const filterOrders = (state) => {
-    setTargetTypeOrders(state);
+  const [targetTypeOrders, setTargetTypeOrders] = useState("PENDING");
+  const filterOrders = (status) => {
+    setTargetTypeOrders(status);
+    fetchOrders(status)
   };
-  const cancelOrders = (id) => {
+  const cancelOrders = async (order) => {
     const data = {
-      order_id: id,
-      state: "Cancelled",
+      orderId: order.id,
     };
-    console.log(data)
-    axios
-      .post(`http://localhost/ecommerce/backend/api/order/cancel.php`, data)
-      .then(function (response) {
-        console.log(response.data);
-        if (response.data.status === "Success") {
-          swal("Completely!", "Cancel orders success", "success");
-          fetchOrders()
-        } else {
-          alert("ko ok");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const res = await axios.put("http://localhost:8082/api/orders/cancel", data, { withCredentials: true });
+    const dataGHN = await axios({
+      method: "POST",
+      url: "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+      headers: {
+        Token: token,
+        ShopId: shopId,
+      },
+      data: {
+        order_codes: [order.order_code_ghn],
+      },
+    });
+    if (res.statusText === "OK" && dataGHN.data.code === 200) {
+      swal("Completely!", "Cancel orders success", "success");
+      setTargetTypeOrders('CANCELED')
+    } else {
+      alert("ko ok");
+    }
   };
-  const fetchOrders = async () => {
-    const id = sessionStorage.getItem("user_id");
-    const res = await axios.get(
-      "http://localhost/ecommerce/backend/api/order/read_single_user.php?user_id=" +
-        id
-    );
-    setOrders(res.data.data);
-    console.log(res.data.data);
+  const fetchOrders = async (status) => {
+    const res = await axios.get("http://localhost:8082/api/orders", { params: { status }, withCredentials: true });
+    setOrders(res.data);
   };
-  const IsSure = (id) => {
+  const IsSure = (order) => {
     confirmAlert({
-      title: 'Are you sure !!!',
+      title: "Are you sure !!!",
       // message: 'Are you sure to delete !!!',
       buttons: [
         {
-          label: 'Yes',
-          onClick: () => cancelOrders(id)
+          label: "Yes",
+          onClick: () => cancelOrders(order),
         },
         {
-          label: 'No',
-          onClick: () => console.log("Ignore delete all product")
-        }
-      ]
+          label: "No",
+          onClick: () => console.log("Ignore delete all product"),
+        },
+      ],
     });
   };
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    fetchOrders(targetTypeOrders);
+  }, [targetTypeOrders]);
 
   return (
     <Container>
       <NavOrders>
-        <TypeOrders
-          className={targetTypeOrders === "All" ? "active" : ""}
-          onClick={() => filterOrders("All")}
-        >
+        <TypeOrders className={targetTypeOrders === "" ? "active" : ""} onClick={() => filterOrders("")}>
           All
         </TypeOrders>
-        <TypeOrders
-          className={targetTypeOrders === "Pending" ? "active" : ""}
-          onClick={() => filterOrders("Pending")}
-        >
+        <TypeOrders className={targetTypeOrders === "PENDING" ? "active" : ""} onClick={() => filterOrders("PENDING")}>
           Pending
         </TypeOrders>
-        <TypeOrders
-          className={targetTypeOrders === "Delivering" ? "active" : ""}
-          onClick={() => filterOrders("Delivering")}
-        >
+        <TypeOrders className={targetTypeOrders === "ACCEPTED" ? "active" : ""} onClick={() => filterOrders("ACCEPTED")}>
+          Accepted
+        </TypeOrders>
+        <TypeOrders className={targetTypeOrders === "DELIVERING" ? "active" : ""} onClick={() => filterOrders("DELIVERING")}>
           Delivering
         </TypeOrders>
-        <TypeOrders
-          className={targetTypeOrders === "Delivered" ? "active" : ""}
-          onClick={() => filterOrders("Delivered")}
-        >
+        <TypeOrders className={targetTypeOrders === "DELIVERED" ? "active" : ""} onClick={() => filterOrders("DELIVERED")}>
           Delivered
         </TypeOrders>
-        <TypeOrders
-          className={targetTypeOrders === "Cancelled" ? "active" : ""}
-          onClick={() => filterOrders("Cancelled")}
-        >
+        <TypeOrders className={targetTypeOrders === "CANCELED" ? "active" : ""} onClick={() => filterOrders("CANCELED")}>
           Cancelled
         </TypeOrders>
       </NavOrders>
       <Hr color="#b8b8b8" />
-      {orders && (targetTypeOrders === "All"
-        ? orders
-        : orders.filter((ord) => ord.state === targetTypeOrders)
-      ).map((ord, idx) => {
-        return (
-          <Order key={idx}>
-            {ord.item.map((item, idx) => {
-              return (
-                <Item key={idx}>
-                  <Image>
-                    <img
-                      src={item.img_cover}
-                      alt="item"
-                      style={{ width: "auto", height: "100%" }}
-                    />
-                  </Image>
-                  <Detail>
-                    <Name>{item.name}</Name>
-                    <Desc>{item.description}</Desc>
-                    <Price>${item.price}</Price>
-                    <Qty>x{item.amount}</Qty>
-                    <Price fw="bold">${item.price * item.amount}</Price>
-                  </Detail>
-                </Item>
-              );
-            })}
-            <Text style={{ textAlign: "right" }}>
-              Delivery cost: ${ord.total_ship}
-            </Text>
-            <Hr />
-            <Total>
-              <Text className="time">Date: {ord.date}</Text>
-              <Text className="total">Total: ${Math.round((ord.total+ord.total_ship) * 100) / 100}</Text>
-            </Total>
-            {ord.state === "Pending" && (
-              <div
-                style={{ textAlign: "right" }}
-                onClick={() => IsSure(ord.order_id)}
-              >
-                <CancelBtn>Cancel</CancelBtn>
-              </div>
-            )}
-          </Order>
-        );
-      })}
+        {orders?.map((ord, idx) => {
+          return (
+            <Order key={idx}>
+              {ord.items.map((item, idx) => {
+                return (
+                  <Item key={idx}>
+                    <Image>
+                      <img src={item.coverImageUrl} alt="item" style={{ width: "auto", height: "100%" }} />
+                    </Image>
+                    <Detail>
+                      <Name>{item.name}</Name>
+                      <Desc>{item.description}</Desc>
+                      <Price>${item.price}</Price>
+                      <Qty>x{item.quantity}</Qty>
+                      <Price fw="bold">${item.price * item.quantity}</Price>
+                    </Detail>
+                  </Item>
+                );
+              })}
+              <Text style={{ textAlign: "right" }}>Delivery cost: ${ord.ship_cost ?? 2}</Text>
+              <Hr />
+              <Total>
+                <Text className="time">Date: {new Date(ord.date).toLocaleString()}</Text>
+                <Text className="total">Total: ${Math.round((ord.price + (ord.ship_cost ?? 2)) * 100) / 100}</Text>
+              </Total>
+              {targetTypeOrders === "PENDING" && (
+                <div style={{ textAlign: "right" }} onClick={() => IsSure(ord)}>
+                  <CancelBtn>Cancel</CancelBtn>
+                </div>
+              )}
+            </Order>
+          );
+        })}
     </Container>
   );
 };

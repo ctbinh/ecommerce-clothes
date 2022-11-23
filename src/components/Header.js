@@ -5,16 +5,14 @@ import { Navbar, Container, Nav, NavDropdown, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getNumCart, numCartSelector } from "../store/reducers/numCartSlice";
 import images from "./images";
+import { useContext } from "react";
+import CartContext from "./CartContext";
+import axios from "axios";
 
 const Header = (props) => {
-  const numCart = useSelector(numCartSelector);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getNumCart());
-  }, [dispatch]);
+  // const numCart = useSelector(numCartSelector);
+  const cart = useContext(CartContext);
   let navigate = useNavigate();
   const signout = () => {
     sessionStorage.clear();
@@ -37,6 +35,11 @@ const Header = (props) => {
     if (data) {
       setUser(data);
     }
+    // const fetchCart = async () => {
+    //   const res = await axios.get("http://localhost:8082/api/cart", { withCredentials: true });
+    //   cart.setItems(res.data);
+    // };
+    // fetchCart();
   }, [props.data]);
   return (
     <>
@@ -114,7 +117,7 @@ const Header = (props) => {
             <div style={{ marginLeft: "auto", minWidth: "60px" }}>
               <Link style={{ textDecoration: "none" }} to="/cart">
                 <CartIcon />
-                <CartCounter>{numCart}</CartCounter>
+                <CartCounter>{cart.items.length}</CartCounter>
               </Link>
             </div>
 
@@ -127,7 +130,7 @@ const Header = (props) => {
                 <UserIcon></UserIcon>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu style={{ zIndex: "9999" }}>
+              <Dropdown.Menu style={{ zIndex: "9999" }} align="end">
                 {user ? (
                   <>
                     <Dropdown.Item as={Link} to="/user">

@@ -116,10 +116,10 @@ const User = () => {
           </Link>
           <Typography color="text.primary">My Account</Typography>
         </Breadcrumbs>
-        <h2 style={{marginTop: '10px'}}>
+        {/* <h2 style={{marginTop: '10px'}}>
           {targetNavItem==="my-account" ? "My Account" : 
             (targetNavItem==="my-orders" ? "My Orders" : "My Wishlist")}
-        </h2>
+        </h2> */}
         <ArrowDropDownIcon className='dropdown-icon'/>
       </Head>
       <Row>

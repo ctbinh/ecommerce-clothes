@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { Container, Row, Col } from "react-grid-system";
 // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { NotificationContainer, NotificationManager } from "react-notifications";
-import Scrollbars from "react-scrollbars-custom";
-import RowOfTable from "./RowOfTable";
+import { NotificationManager } from "react-notifications";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -14,13 +12,21 @@ import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import CartItem from "./CartItem";
+import InputAddress from "./InputAddress";
+import { useContext } from "react";
+import CartContext from "./CartContext";
 
+const token = "9891ae72-415a-11ed-8636-7617f3863de9";
+const shopId = "3307734";
 const Cart = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [address, setAddress] = useState({});
+  const [couponCode, setCouponCode] = useState("");
+
+  // const [cart, setCart] = useState([]);
+  const cart = useContext(CartContext);
+  const { items, setItems } = cart;
   const navigate = useNavigate();
   const createNotification = (type) => {
     switch (type) {
@@ -45,25 +51,110 @@ const Cart = () => {
       case "noItems":
         NotificationManager.warning("There is no item in cart", "Empty cart !!!", 2000);
         break;
+      case "orderSuccess":
+        NotificationManager.success("Order successfully", "Success", 2000);
+        break;
       default:
         break;
     }
   };
+
   const removeItem = async (e, id) => {
     e.preventDefault();
     const res = await axios.delete(`http://localhost:8082/api/cart/${id}`, { withCredentials: true });
-    setCart(cart.filter((item) => item.id !== res.data));
+    setItems(items.filter((item) => item.id !== res.data));
+  };
+  const clearInfo = () => {
+    setName("");
+    setPhone("");
+    setAddress({});
+    setCouponCode("");
+    cart.setItems([]);
+    cart.setTargetService("");
+  };
+  const updateItem = async (item, body) => {
+    const { quantity } = body;
+    if (quantity > 0) {
+      const data = { itemId: item.id, quantity };
+      const res = await axios.put(`http://localhost:8082/api/cart`, data, { withCredentials: true });
+      setItems(
+        items.map((item) => {
+          if (item.id !== res.data) {
+            return item;
+          } else {
+            item.quantity = quantity;
+            return item;
+          }
+        })
+      );
+    }
+  };
+  const order = async () => {
+    const _address = address.street + ", " + address.ward + ", " + address.district + ", " + address.province;
+    // const paymentMethod = cart.targetService.short_name
+    const dataGHN = await axios({
+      method: "POST",
+      url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+      headers: {
+        Token: token,
+        ShopId: shopId,
+      },
+      data: {
+        payment_type_id: 2,
+        required_note: "KHONGCHOXEMHANG",
+        return_phone: null,
+        return_address: "",
+        return_district_id: null,
+        return_ward_code: null,
+        client_order_code: null,
+        to_name: `${name}`,
+        to_phone: `${phone}`,
+        to_address: `${cart.targetWard.WardName}, ${cart.targetDistrict.DistrictName}, ${cart.targetProvince.ProvinceName}`,
+        to_ward_code: `${cart.targetWard.WardCode}`,
+        to_district_id: cart.targetDistrict.DistrictID,
+        cod_amount: cart.items.reduce((total, item) => Math.round(total + item.price * 23000 * item.quantity), 0),
+        content: "Shop MU",
+        weight: 1,
+        length: 1,
+        width: 1,
+        height: 1,
+        pick_station_id: cart.targetDistrict.DistrictID,
+        deliver_station_id: null,
+        insurance_value: cart.items.reduce((total, item) => Math.round(total + item.price * 23000 * item.quantity), 0),
+        service_id: cart.targetService.service_id,
+        service_type_id: cart.targetService.service_type_id,
+        coupon: null,
+        pick_shift: [2],
+        items: cart.items.map((item) => {
+          item.price = Math.round(item.price*23000);
+          return item;
+        }),
+      },
+    });
+    const data = {
+      address: _address,
+      phone,
+      paymentMethod: "DIRECTLY",
+      favourCode: couponCode,
+      order_code_ghn: dataGHN.data.data.order_code,
+      ship_cost: Number(dataGHN.data.data.total_fee / 23000).toFixed(2),
+    };
+    const res = await axios.post("http://localhost:8082/api/orders", data, { withCredentials: true });
+    if (res.status === 200 && dataGHN.data.code === 200) {
+      createNotification("orderSuccess");
+      clearInfo();
+      navigate("/");
+    }
   };
   useEffect(() => {
     const fetchCart = async () => {
       const res = await axios.get("http://localhost:8082/api/cart", { withCredentials: true });
-      console.log(res.data);
-      setCart(res.data);
+      setItems(res.data);
     };
     fetchCart();
-  }, []);
+  }, [setItems]);
   const ContainerNotification = (name, phone, address) => {
-    if (cart.length === 0) {
+    if (items.length === 0) {
       createNotification("noItems");
       return;
     }
@@ -80,6 +171,7 @@ const Cart = () => {
       return;
     }
   };
+
   return (
     <div>
       <Header />
@@ -88,8 +180,8 @@ const Cart = () => {
           <Col xl={7.5}>
             <Title>Shopping cart</Title>
             <ListItem>
-              {cart?.map((item) => {
-                return <CartItem item={item} removeItem={removeItem} />;
+              {items?.map((item) => {
+                return <CartItem item={item} removeItem={removeItem} updateItem={updateItem} />;
               })}
             </ListItem>
           </Col>
@@ -97,38 +189,15 @@ const Cart = () => {
             <Title>Summary</Title>
             <ContainerInput>
               <NameInput>Name</NameInput>
-              <Input type="text" onChange={(e) => setName(e.target.value)} />
+              <Input type="text" placeholder="Your name" onChange={(e) => setName(e.target.value)} />
             </ContainerInput>
             <ContainerInput>
               <NameInput>Phone Number</NameInput>
-              <Input type="text" onChange={(e) => setPhone(e.target.value)} />
+              <Input type="text" placeholder="Your phone number" onChange={(e) => setPhone(e.target.value)} />
             </ContainerInput>
-            <ContainerInput>
-              <NameInput>Address</NameInput>
-              <Input type="text" onChange={(e) => setAddress(e.target.value)} />
-            </ContainerInput>
-            <Line />
-            <Row>
-              <Col sm={8.5} xs={8.5}>
-                <Ship>Shipping</Ship>
-              </Col>
-              <Col sm={2.5} xs={2.5}>
-                <ValueShip>${(20).toLocaleString()}</ValueShip>
-                {/* <ValueShip>{document.getElementById("name").value}</ValueShip> */}
-              </Col>
-            </Row>
+            <InputAddress address={address} setAddress={setAddress} setCouponCode={setCouponCode} />
             <br />
-            <Row>
-              <Col sm={8.5} xs={8.5}>
-                <Ship>Order Total</Ship>
-              </Col>
-              <Col sm={2.5} xs={2.5}>
-                <ValueShip>${total}</ValueShip>
-              </Col>
-            </Row>
-            <br />
-            <Link
-              to="/checkout"
+            <div
               style={LinkStyle}
               state={{
                 name: name,
@@ -136,9 +205,27 @@ const Cart = () => {
                 phone: phone,
               }}
             >
-              {name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && cart.length !== 0 && !/\D/.test(phone) && <ButtonCheckout>Proceed to Checkout</ButtonCheckout>}
-            </Link>
-            {!(name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && cart.length !== 0 && !/\D/.test(phone)) && (
+              {name?.length >= 3 &&
+                name?.length <= 14 &&
+                address.hasOwnProperty("province") &&
+                address.hasOwnProperty("district") &&
+                address.hasOwnProperty("ward") &&
+                address.hasOwnProperty("street") &&
+                cart.items?.length !== 0 &&
+                cart.targetService?.short_name?.length > 0 &&
+                !/\D/.test(phone) && <ButtonCheckout onClick={order}>Order now</ButtonCheckout>}
+            </div>
+            {!(
+              name?.length >= 3 &&
+              name?.length <= 14 &&
+              address.hasOwnProperty("province") &&
+              address.hasOwnProperty("district") &&
+              address.hasOwnProperty("ward") &&
+              address.hasOwnProperty("street") &&
+              cart.items?.length !== 0 &&
+              cart.targetService?.short_name?.length > 0 &&
+              !/\D/.test(phone)
+            ) && (
               <ButtonFill
                 // disabled
                 onClick={() => ContainerNotification(name, phone, address)}
@@ -146,8 +233,6 @@ const Cart = () => {
                 Please fill all fields
               </ButtonFill>
             )}
-            <NotificationContainer />
-            {name.length >= 3 && name.length <= 14 && address.length >= 3 && address.length <= 30 && !/\D/.test(phone) && <ButtonMultiple>Checkout with Multiple Address</ButtonMultiple>}
           </Col>
         </Row>
       </ContainerStyled>
@@ -166,44 +251,28 @@ const ListItem = styled.ul`
   max-height: 500px;
   overflow-x: hidden;
 `;
-const Line = styled.hr`
-  /* margin-top: 10px; */
-  margin-bottom: 10px;
-  width: 100%;
-  height: 1px;
-  background-color: #cacdd8;
-  border-radius: 10%;
-`;
+
 const ContainerInput = styled.div`
-  background-color: #c5d0ff;
   margin-bottom: 10px;
 `;
 const NameInput = styled.div`
   font-weight: 600;
   margin-bottom: 10px;
+  font-size: 14px;
 `;
 const Input = styled.input`
   width: 100%;
-  height: 40px;
+  height: 30px;
   border-radius: 5px;
   border: solid #cccccc 1px;
   padding-left: 2%;
 `;
 
 const ContainerSummary = {
-  backgroundColor: "#C5D0FF",
-  // backgroundColor: "red",
-  borderRadius: "10px",
-  // boxShadow: "-5px 5px #444444",
+  borderRadius: "5px",
+  border: "1px solid #b4b4b4",
+  height: "fit-content",
 };
-const Ship = styled.span`
-  font-weight: 600;
-  margin-bottom: 10px;
-  padding-right: 20px;
-`;
-const ValueShip = styled.span`
-  font-weight: 600;
-`;
 const ButtonCheckout = styled.button`
   border-radius: 20px;
   background-color: #0156ff;
@@ -264,15 +333,5 @@ const LinkStyle = {
 const ContainerStyled = styled(Container)`
   margin-top: 40px;
 `;
-const CloseResponesive = styled(Col)`
-  @media (max-width: 480px) {
-    display: none;
-  }
-`;
-const NoItemInCart = styled.h2`
-  font-style: italic;
-  font-size: 30px;
-  text-align: center;
-  margin-top: 30px;
-`;
+
 export default Cart;

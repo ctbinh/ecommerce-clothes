@@ -26,6 +26,7 @@ import StoresPage from "./components/StoresPage/StoresPage";
 import StoresDetails from "./components/StoresDetails/StoresDetails";
 import UploadDesign from "./components/UploadDesign/UploadDesign";
 import DetailProduct from "./components/DetailProduct/DetailProduct";
+import { NotificationContainer } from "react-notifications";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -37,6 +38,7 @@ function App() {
 
   return (
     <div className="App">
+      <NotificationContainer />
       <BrowserRouter>
         <Routes>
           <Route path="admin/login" element={<AdminLogin />} />

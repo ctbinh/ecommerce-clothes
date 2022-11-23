@@ -17,8 +17,7 @@ const Product = (props) => {
     <Container
       key={props.idx}
       display={props.display}
-      onClick={() => navigate("/stores/" + props.idx, { state: product })}
-      // onClick={() => props.onClick(product.product_id)}
+      onClick={() => navigate("/stores/" + product.id)}
     >
       {/* {product.amount > 0 ?
         <Status display={props.display}>
@@ -28,7 +27,7 @@ const Product = (props) => {
         </Status>} */}
       <Image display={props.display}>
         <img
-          src={product.img_cover}
+          src={product.brandUrl}
           style={{ height: "100%", width: "100%" }}
           alt="laptop"
         />
@@ -97,8 +96,9 @@ const Image = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* padding: 10px; */
-  width: 214px;
+  box-sizing: border-box;
+  width: 100%;
+  /* margin: 5px; */
   max-height: 300px;
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.09);
@@ -111,7 +111,7 @@ const Container = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  @media (max-width: 1080px) {
+  /* @media (max-width: 1080px) {
     width: ${(props) => (props.display === 0 ? "32%" : "100%")};
   }
   @media (max-width: 768px) {
@@ -119,6 +119,6 @@ const Container = styled.div`
   }
   @media (max-width: 480px) {
     width: ${(props) => (props.display === 0 ? "100%" : "100%")};
-  }
+  } */
 `;
 export default Product;

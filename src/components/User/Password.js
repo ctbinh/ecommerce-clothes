@@ -12,9 +12,8 @@ export default function Password() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const id = sessionStorage.getItem("user_id");
-      const res = await axios.get("http://localhost/ecommerce/backend/api/user/getUser.php?user_id=" + id);
-      setUserInfor(res.data.data[0]);
+      const res = await axios.get("http://localhost:8082/api/users/info", { withCredentials: true });
+      setUserInfor(res.data);
     };
     fetchUser();
   }, []);

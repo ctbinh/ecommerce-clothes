@@ -9,9 +9,10 @@ import Footer from "../Footer";
 import Filter from "./Filter";
 import Product from "./Product";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { useCallback } from "react";
+import { NotificationManager } from "react-notifications";
 
 let data = [];
 const ProductsPage = (props) => {
@@ -61,6 +62,8 @@ const ProductsPage = (props) => {
       code: "#d10bd1",
     },
   ];
+  const [searchParams, setSearchParams] = useSearchParams();
+
   let navigate = useNavigate();
   const [show, setShow] = useState(0);
   const [numPerPage, setNumPerPage] = useState(10);
@@ -76,7 +79,7 @@ const ProductsPage = (props) => {
   const [colorTarget, setColorTarget] = useState("");
   const changePage = (event, value) => {
     setcurrPage(value);
-    fetchProducts("", {payload: null, page: value, numPerPage: numPerPage});
+    fetchProducts("", { payload: null, page: value, numPerPage: numPerPage });
   };
   const changeDisplay = (value) => {
     setDisplay(value);
@@ -84,7 +87,7 @@ const ProductsPage = (props) => {
   const changeNumPerPage = (event) => {
     setcurrPage(1);
     setNumPerPage(event.target.value);
-    fetchProducts("", {numPerPage: event.target.value, page: 1});
+    fetchProducts("", { numPerPage: event.target.value, page: 1 });
     // setcountPage(Math.ceil(filteredProducts.length / event.target.value));
   };
   const getProductPerPage = (products) => {
@@ -93,7 +96,7 @@ const ProductsPage = (props) => {
     setproducts(products.slice(indexFirst, indexLast));
   };
   const applyFilter = () => {
-    fetchProducts("", {payload: null});
+    fetchProducts("", { payload: null });
   };
   const clearFilter = () => {
     fetchProducts("clear", {});
@@ -110,6 +113,9 @@ const ProductsPage = (props) => {
   };
   const getBodyFilter = useCallback(
     (action, params) => {
+      if (searchParams.get("category") && categoryFilter.length === 0) {
+        setCategoryFilter([...categoryFilter, searchParams.get("category")]);
+      }
       const color = params.color;
       const _page = params.page ?? currPage;
       const _numPerPage = params.numPerPage ?? numPerPage;
@@ -124,7 +130,7 @@ const ProductsPage = (props) => {
         },
         order: {
           order: "asc",
-          criterion: "asc",
+          criterion: "NONE",
         },
         fromDate: "11/17/2022",
       };
@@ -144,19 +150,24 @@ const ProductsPage = (props) => {
         }
         if (categoryFilter.length > 0) {
           data.filter.genders = categoryFilter;
+        } else {
+          if (searchParams.get("category")) {
+            data.filter.genders = [searchParams.get("category")];
+          }
         }
+
         if (colorTarget !== "") {
           data.filter.color = colorTarget;
         }
       }
       return data;
     },
-    [categoryFilter, colorTarget, sizeFilter, value, currPage, numPerPage]
+    [categoryFilter, colorTarget, sizeFilter, value, currPage, numPerPage, searchParams]
   );
   useEffect(() => {
     const fetchProducts = async () => {
       if (isFirst) {
-        const res = await axios.post("http://localhost:8082/api/products", getBodyFilter("", {page: 1, numPerPage}), { withCredentials: true });
+        const res = await axios.post("http://localhost:8082/api/products", getBodyFilter("", { page: 1, numPerPage }), { withCredentials: true });
         data = res.data;
         setfilteredProducts(data);
       }

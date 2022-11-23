@@ -12,8 +12,13 @@ import acer from "./acer.png";
 import asus from "./asus.png";
 import lg from "./lg.png";
 import hcmut from "./hcmut.png";
+import uniform from "./uniform.jpg";
+import image2 from "./image2.png"
+import football from "./football.jpg"
 
 const images = {
+  football,
+  image2,
   poster,
   adata,
   gigabyte,
@@ -28,6 +33,7 @@ const images = {
   asus,
   lg,
   hcmut,
+  uniform
 };
 
 export default images;
