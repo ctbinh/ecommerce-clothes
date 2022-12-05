@@ -46,7 +46,6 @@ const Header = (props) => {
       <Navbar
         collapseOnSelect
         expand="lg"
-        bg="dark"
         variant="dark"
         style={{ backgroundColor: "black" }}
       >
@@ -57,13 +56,13 @@ const Header = (props) => {
             className="d-flex flex-row align-items-center"
           >
             <img
-              src={images.hcmut}
+              src={images.logo1}
               alt="Logo HCMUT"
               width="55"
               height="55"
               className="d-inline-block align-top"
             />
-            <Title>BK SHOP</Title>
+            <Title>Junifo</Title>
           </Navbar.Brand>
 
           <Navbar.Collapse id="responsive-navbar-nav">

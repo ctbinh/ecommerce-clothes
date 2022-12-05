@@ -37,7 +37,7 @@ const About = () => {
         <>
             <Header></Header>
             <AboutPage>
-                <Row xs={1} md={2} className="g-4">
+                {/* <Row xs={1} md={2} className="g-4">
                     {info.map((member, idx) => (
                         <Col key={idx} >
                             <Card>
@@ -50,7 +50,7 @@ const About = () => {
                             </Card>
                         </Col>
                     ))}
-                </Row>
+                </Row> */}
             </AboutPage>
             <Footer></Footer>
         </>

@@ -15,6 +15,8 @@ import hcmut from "./hcmut.png";
 import uniform from "./uniform.jpg";
 import image2 from "./image2.png"
 import football from "./football.jpg"
+import logo from "./LOGO.png"
+import logo1 from "./LOGO1.png"
 
 const images = {
   football,
@@ -33,7 +35,8 @@ const images = {
   asus,
   lg,
   hcmut,
-  uniform
+  uniform,
+  logo, logo1
 };
 
 export default images;

@@ -8,13 +8,12 @@ const Footer = () => {
   return (
     <div>
       <Row>
-        <Logo src={images.hcmut} alt="Logo HCMUT" />
+        <Logo src={images.logo1} alt="Logo HCMUT" />
         <Infor>
-          <InforTitle>Team members</InforTitle>
-          <InforItem>Nguyen Dinh An</InforItem>
-          <InforItem>Cao Thanh Binh</InforItem>
-          <InforItem>Nguyen Tran Hoang</InforItem>
-          <InforItem>Nguyen Thanh Long</InforItem>
+          <InforTitle>Collection</InforTitle>
+          <InforItem>Uniform</InforItem>
+          <InforItem>Football</InforItem>
+          <InforItem>Other</InforItem>
         </Infor>
         <Infor>
           <InforTitle>Address</InforTitle>

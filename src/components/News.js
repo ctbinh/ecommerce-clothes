@@ -10,9 +10,9 @@ const News = () => {
       <Container>
         <Posts>
           <Post>
-            <Img src="https://images.businessnewsdaily.com/app/uploads/2022/04/04074553/1554244010.jpeg" />
+            <Img src="https://www.colourup.com.au/pub/media/wysiwyg/114aa63790aa455f53ed9c9d2c2915e3.png" />
             <Content>
-              <Title>How to fix my laptop?</Title>
+              <Title>How to choose uniform?</Title>
               <Date>2022-06-11</Date>
               <Description>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam
@@ -21,14 +21,14 @@ const News = () => {
                 sit veniam maxime.
               </Description>
               <TagsPost>
-                <TagItem>#How to fix</TagItem>
+                <TagItem>#How to choose</TagItem>
               </TagsPost>
             </Content>
           </Post>
           <Post>
-            <Img src="http://winplasplas.com/wp-content/uploads/2021/06/mchin_180905_4061_0006.0.jpg" />
+            <Img src="https://www.chorltonhigh.manchester.sch.uk/images/news/239_HJR2943_ChorltonHigh_RoscoeRutter_Apr22.jpg" />
             <Content>
-              <Title>How to choose the fastest laptop?</Title>
+              <Title>Uniform?</Title>
               <Date>2022-06-09</Date>
               <Description>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam
@@ -37,15 +37,14 @@ const News = () => {
                 sit veniam maxime.
               </Description>
               <TagsPost>
-                <TagItem>#The fastest laptop</TagItem>
-                <TagItem>#How to choose</TagItem>
+                <TagItem>#Uniform</TagItem>
               </TagsPost>
             </Content>
           </Post>
           <Post>
-            <Img src="https://cdn1.hoanghamobile.com/tin-tuc/wp-content/uploads/2020/01/1-18.jpg" />
+            <Img src="https://i.pinimg.com/736x/83/fe/60/83fe60aaa9885e8675f44deda105d4bb.jpg" />
             <Content>
-              <Title>How to choose laptop for programming?</Title>
+              <Title>Teamate?</Title>
               <Date>2022-06-08</Date>
               <Description>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam
@@ -54,16 +53,14 @@ const News = () => {
                 sit veniam maxime.
               </Description>
               <TagsPost>
-                <TagItem>#Programming</TagItem>
-                <TagItem>#How to choose</TagItem>
+                <TagItem>#Teamate</TagItem>
               </TagsPost>
             </Content>
           </Post>
         </Posts>
         <Tags>
-          <TagItem>#How to fix</TagItem>
-          <TagItem>#Programming</TagItem>
-          <TagItem>#The fastest laptop</TagItem>
+          <TagItem>#Teamate</TagItem>
+          <TagItem>#Uniform</TagItem>
           <TagItem>#How to choose</TagItem>
         </Tags>
       </Container>
