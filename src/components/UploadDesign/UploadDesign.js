@@ -38,7 +38,7 @@ const UploadDesign = (props) => {
     const fetchProducts = async () => {
       if (isFirst) {
         const res = await axios.post(
-          `http://localhost:8082/api/stores/${idProduct.id}/products`,
+          `${process.env.REACT_APP_URL_SERVER}/api/stores/${idProduct.id}/products`,
           {
             pageNumber: 1,
             numOfItemsPerPage: 10,

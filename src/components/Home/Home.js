@@ -3,7 +3,6 @@ import Footer from "../Footer";
 import Header from "../Header";
 // import uniform from "../images/unifo";
 import images from "../images";
-import image3 from "../images/image3.png";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,7 @@ const Home = () => {
   const navigation = useNavigate();
   const fetchProducts = async (tab) => {
     const res = await axios.post(
-      "http://localhost:8082/api/products",
+      `${process.env.REACT_APP_URL_SERVER}/api/products`,
       {
         pageNumber: 1,
         numOfItemsPerPage: 10,
@@ -45,7 +44,7 @@ const Home = () => {
     const fetchProducts = async () => {
       if (isFirst) {
         const res = await axios.post(
-          "http://localhost:8082/api/products",
+          `${process.env.REACT_APP_URL_SERVER}/api/products`,
           {
             pageNumber: 1,
             numOfItemsPerPage: 10,

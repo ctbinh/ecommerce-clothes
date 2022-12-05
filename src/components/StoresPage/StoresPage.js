@@ -141,7 +141,7 @@ const StoresPage = (props) => {
     const fetchStores = async () => {
       if (isFirst) {
         const res = await axios.post(
-          "http://localhost:8082/api/stores",
+          `${process.env.REACT_APP_URL_SERVER}/api/stores`,
           {
             pageNumber: 1,
             numOfItemsPerPage: 25,

@@ -12,7 +12,7 @@ export default function Password() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get("http://localhost:8082/api/users/info", { withCredentials: true });
+      const res = await axios.get(`${process.env.REACT_APP_URL_SERVER}/api/users/info`, { withCredentials: true });
       setUserInfor(res.data);
     };
     fetchUser();

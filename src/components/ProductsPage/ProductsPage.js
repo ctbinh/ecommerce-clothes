@@ -105,7 +105,7 @@ const ProductsPage = (props) => {
     navigate("/detail/" + id);
   };
   const fetchProducts = async (action, params) => {
-    const res = await axios.post("http://localhost:8082/api/products", getBodyFilter(action, params), { withCredentials: true });
+    const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/products`, getBodyFilter(action, params), { withCredentials: true });
     data = res.data;
     // setcountPage(Math.ceil(data.length / num));
     setfilteredProducts(data);
@@ -167,7 +167,7 @@ const ProductsPage = (props) => {
   useEffect(() => {
     const fetchProducts = async () => {
       if (isFirst) {
-        const res = await axios.post("http://localhost:8082/api/products", getBodyFilter("", { page: 1, numPerPage }), { withCredentials: true });
+        const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/products`, getBodyFilter("", { page: 1, numPerPage }), { withCredentials: true });
         data = res.data;
         setfilteredProducts(data);
       }

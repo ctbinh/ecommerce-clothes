@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import images from "./images";
 import { useContext } from "react";
 import CartContext from "./CartContext";
-import axios from "axios";
 
 const Header = (props) => {
   // const numCart = useSelector(numCartSelector);
@@ -35,11 +34,6 @@ const Header = (props) => {
     if (data) {
       setUser(data);
     }
-    // const fetchCart = async () => {
-    //   const res = await axios.get("http://localhost:8082/api/cart", { withCredentials: true });
-    //   cart.setItems(res.data);
-    // };
-    // fetchCart();
   }, [props.data]);
   return (
     <>

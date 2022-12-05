@@ -17,14 +17,14 @@ const DetailProduct = () => {
   const addToCart = async (e, productId) => {
     e.preventDefault();
     const data = { productId, quantity: quantity, color: selectedColor, size: selectedSize };
-    const res = await axios.post("http://localhost:8082/api/cart", data, { withCredentials: true });
+    const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/cart`, data, { withCredentials: true });
     if (res.status === 200) {
       NotificationManager.success("Added item to cart", "Success", 2000);
     }
   };
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await axios.get(`http://localhost:8082/api/products/${product_id}`, { withCredentials: true });
+      const res = await axios.get(`${process.env.REACT_APP_URL_SERVER}/api/products/${product_id}`, { withCredentials: true });
       setProduct(res.data);
     };
     fetchProduct();

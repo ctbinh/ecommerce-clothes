@@ -34,7 +34,7 @@ export default function Information(props) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get("http://localhost:8082/api/users/info", { withCredentials: true });
+      const res = await axios.get(`${process.env.REACT_APP_URL_SERVER}/api/users/info`, { withCredentials: true });
       setUserInfor(res.data);
     };
     fetchUser();
@@ -77,7 +77,7 @@ export default function Information(props) {
     if(!data.gender) {
       data.gender = "MALE"
     }
-    const res = await axios.put("http://localhost:8082/api/users/", data, { withCredentials: true });
+    const res = await axios.put(`${process.env.REACT_APP_URL_SERVER}/api/users/`, data, { withCredentials: true });
     console.log(res);
   };
   return (

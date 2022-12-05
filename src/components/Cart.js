@@ -61,7 +61,7 @@ const Cart = () => {
 
   const removeItem = async (e, id) => {
     e.preventDefault();
-    const res = await axios.delete(`http://localhost:8082/api/cart/${id}`, { withCredentials: true });
+    const res = await axios.delete(`${process.env.REACT_APP_URL_SERVER}/api/cart/${id}`, { withCredentials: true });
     setItems(items.filter((item) => item.id !== res.data));
   };
   const clearInfo = () => {
@@ -76,7 +76,7 @@ const Cart = () => {
     const { quantity } = body;
     if (quantity > 0) {
       const data = { itemId: item.id, quantity };
-      const res = await axios.put(`http://localhost:8082/api/cart`, data, { withCredentials: true });
+      const res = await axios.put(`${process.env.REACT_APP_URL_SERVER}/api/cart`, data, { withCredentials: true });
       setItems(
         items.map((item) => {
           if (item.id !== res.data) {
@@ -139,7 +139,7 @@ const Cart = () => {
       order_code_ghn: dataGHN.data.data.order_code,
       ship_cost: Number(dataGHN.data.data.total_fee / 23000).toFixed(2),
     };
-    const res = await axios.post("http://localhost:8082/api/orders", data, { withCredentials: true });
+    const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/orders`, data, { withCredentials: true });
     if (res.status === 200 && dataGHN.data.code === 200) {
       createNotification("orderSuccess");
       clearInfo();
@@ -148,7 +148,7 @@ const Cart = () => {
   };
   useEffect(() => {
     const fetchCart = async () => {
-      const res = await axios.get("http://localhost:8082/api/cart", { withCredentials: true });
+      const res = await axios.get(`${process.env.REACT_APP_URL_SERVER}/api/cart`, { withCredentials: true });
       setItems(res.data);
     };
     fetchCart();

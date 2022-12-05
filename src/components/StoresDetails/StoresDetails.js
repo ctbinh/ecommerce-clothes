@@ -244,7 +244,7 @@ const StoresDetails = (props) => {
     navigate("/detail/" + id);
   };
   const fetchProducts = async (action, params) => {
-    const res = await axios.post(`http://localhost:8082/api/stores/${idProduct.id}/products`, getBodyFilter(action, params), { withCredentials: true });
+    const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/stores/${idProduct.id}/products`, getBodyFilter(action, params), { withCredentials: true });
     data = res.data.products;
     setfilteredProducts(data);
     setProducts(data);
@@ -298,7 +298,7 @@ const StoresDetails = (props) => {
   useEffect(() => {
     const fetchProducts = async () => {
       if (isFirst) {
-        const res = await axios.post(`http://localhost:8082/api/stores/${idProduct.id}/products`, getBodyFilter("", { page: 1, numPerPage }), { withCredentials: true });
+        const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/stores/${idProduct.id}/products`, getBodyFilter("", { page: 1, numPerPage }), { withCredentials: true });
         data = res.data.products;
         setfilteredProducts(res.data.products);
         setstore(res.data);

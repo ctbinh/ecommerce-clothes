@@ -17,7 +17,7 @@ const Orders = () => {
     const data = {
       orderId: order.id,
     };
-    const res = await axios.put("http://localhost:8082/api/orders/cancel", data, { withCredentials: true });
+    const res = await axios.put(`${process.env.REACT_APP_URL_SERVER}/api/orders/cancel`, data, { withCredentials: true });
     const dataGHN = await axios({
       method: "POST",
       url: "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
@@ -37,7 +37,7 @@ const Orders = () => {
     }
   };
   const fetchOrders = async (status) => {
-    const res = await axios.get("http://localhost:8082/api/orders", { params: { status }, withCredentials: true });
+    const res = await axios.get(`${process.env.REACT_APP_URL_SERVER}/api/orders`, { params: { status }, withCredentials: true });
     setOrders(res.data);
   };
   const IsSure = (order) => {

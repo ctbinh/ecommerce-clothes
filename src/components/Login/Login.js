@@ -35,7 +35,7 @@ const Login = (props) => {
       ],
     };
     axios
-      .post(`http://localhost:8082/auth/signin`, data, {withCredentials: true})
+      .post(`${process.env.REACT_APP_URL_SERVER}/auth/signin`, data, {withCredentials: true})
       .then(function (response) {
         console.log(response.data);
         if (response.data.status === "OK") {
@@ -84,7 +84,7 @@ const Login = (props) => {
         },
       ],
     };
-    const res = await axios.post(`http://localhost:8082/auth/signup`, data, {withCredentials:true});
+    const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/auth/signup`, data, {withCredentials:true});
     console.log(res.data);
     if (res.data.status === "OK") {
       setMsg("Create account success!");
