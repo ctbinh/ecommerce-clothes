@@ -14,7 +14,6 @@ import styled from "styled-components";
 
 const Home = () => {
   const [isFirst, setIsFirst] = useState(true);
-  let navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const onChange = (newValue) => {
     fetchProducts(newValue);
@@ -41,6 +40,7 @@ const Home = () => {
     setProducts(res.data.slice(0, 3));
   };
   useEffect(() => {
+    console.log(process.env.REACT_APP_URL_SERVER)
     const fetchProducts = async () => {
       if (isFirst) {
         const res = await axios.post(
@@ -62,11 +62,8 @@ const Home = () => {
     };
     fetchProducts();
     setIsFirst(false);
-  }, [isFirst, products]);
+  }, [isFirst, products, targetTab]);
 
-  const targetProduct = (id) => {
-    navigate("/detail/" + id);
-  };
 
   return (
     <div>
@@ -118,7 +115,7 @@ const Home = () => {
         </div>
 
         <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
-          <img src={images.image2} className="relative"></img>
+          <img src={images.image2} className="relative" alt="img"></img>
           <button
             onClick={() => {
               navigation("/products?category=OTHER");

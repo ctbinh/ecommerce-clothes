@@ -2,14 +2,12 @@ import styled from "styled-components";
 import { Container, Row, Col } from "react-grid-system";
 // import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { NotificationManager } from "react-notifications";
-import { Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import React, { useState, useEffect } from "react";
 import "react-notifications/lib/notifications.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import CartItem from "./CartItem";
 import InputAddress from "./InputAddress";
@@ -292,23 +290,6 @@ const ButtonCheckout = styled.button`
   :disabled {
     background-color: #444444;
   }
-`;
-const ButtonMultiple = styled.button`
-  border-radius: 20px;
-  background-color: #ffb800;
-  color: #ffffff;
-  font-weight: 600;
-  display: block;
-  height: 40px;
-  width: 100%;
-  border: none;
-  transition: all 0.5s;
-  :hover,
-  :active {
-    background-color: #c0ac7b;
-  }
-  margin-bottom: 10px;
-  cursor: pointer;
 `;
 const ButtonFill = styled.button`
   border-radius: 20px;

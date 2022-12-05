@@ -21,139 +21,6 @@ import AppsIcon from "@mui/icons-material/Apps";
 
 let data = [];
 
-const dataStores = [
-  {
-    id: 0,
-    name: "Adidas Official Store",
-    status: "Hoạt động 25 phút trước",
-    img_avatar: "https://cf.shopee.vn/file/c918d19742ff2a678ea12bd3ab0aff8c_tn",
-    img_bg: "https://cf.shopee.vn/file/85ddd9f53cae25d021b75aef97debaf2_tn",
-    number_products: "12,5K",
-    following: "7",
-    follower: "827,5K",
-    answer_rate: "99%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.8 (56,6K đánh giá)",
-  },
-  {
-    id: 1,
-    name: "Elipsport Official Store",
-    status: "Hoạt động 2 giờ trước",
-    img_avatar: "https://cf.shopee.vn/file/c04c459bb131213f92c1275277f76e15_tn",
-    img_bg: "https://cf.shopee.vn/file/7379e93f5f39561a170d717bbc2ff727_tn",
-    number_products: "33",
-    following: "1",
-    follower: "3,4K",
-    answer_rate: "44%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.8 (75 đánh giá)",
-  },
-  {
-    id: 2,
-    name: "KAMITO OFFICIAL STORE",
-    status: "Hoạt động 19 phút trước",
-    img_avatar: "https://cf.shopee.vn/file/6305f04847280f728ae3c6420d8e77b3_tn",
-    img_bg: "	https://cf.shopee.vn/file/bdefe6f029e453c6aa95b09191633071_tn",
-    number_products: "132",
-    following: "94",
-    follower: "95,3K",
-    answer_rate: "88%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (3,8k đánh giá)",
-  },
-  {
-    id: 3,
-    name: "kingdomfishing.vn",
-    status: "Hoạt động 10 phút trước",
-    img_avatar: "https://cf.shopee.vn/file/39459c3cc79a5c79e6e0a18d41293c01_tn",
-    img_bg: "	https://cf.shopee.vn/file/13cdaa071d5046fd6585d42359bb7859_tn",
-    number_products: "207",
-    following: "1",
-    follower: "3,4K",
-    answer_rate: "93%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (4k đánh giá)",
-  },
-  {
-    id: 4,
-    name: "Lining Official Store",
-    status: "Hoạt động 2 giờ trước",
-    img_avatar: "	https://cf.shopee.vn/file/ed9b77504c69cf03d26db0adf9b8d8c0_tn",
-    img_bg: "https://cf.shopee.vn/file/8c3e3a475837917c297373300ab543ed_tn",
-    number_products: "2,5k",
-    following: "17",
-    follower: "42,9K",
-    answer_rate: "62%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.8 (3,1k đánh giá)",
-  },
-  {
-    id: 5,
-    name: "Macat",
-    status: "Hoạt động 8 giờ trước",
-    img_avatar: "	https://cf.shopee.vn/file/75df9c7916bb447903365825b49c5624_tn",
-    img_bg: "	https://cf.shopee.vn/file/3f2b08d73bb5fa9fd4298a90b28ca154_tn",
-    number_products: "81",
-    following: "4",
-    follower: "1,2K",
-    answer_rate: "59%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (541 đánh giá)",
-  },
-  {
-    id: 6,
-    name: "PRAZA - Official Store",
-    status: "Hoạt động 2 giờ trước",
-    img_avatar: "https://cf.shopee.vn/file/7a73e5d47426070dc6b7b27f4df982c2_tn",
-    img_bg: "	https://cf.shopee.vn/file/82d8af9ff91a28efcc8c3504c66fc28a_tn",
-    number_products: "440",
-    following: "12",
-    follower: "190k",
-    answer_rate: "82%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.8 (87,9k đánh giá)",
-  },
-  {
-    id: 7,
-    name: "Sport1.vn",
-    status: "Hoạt động 8 phút trước",
-    img_avatar: "https://cf.shopee.vn/file/ad38d6cbd0c4027f0bd7375c90ca2e9f_tn",
-    img_bg: "	https://cf.shopee.vn/file/1f3d9ed658c673910cd80f4646391e13_tn",
-    number_products: "167",
-    following: "6",
-    follower: "5,7k",
-    answer_rate: "76%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (388 đánh giá)",
-  },
-  {
-    id: 8,
-    name: "Heybro",
-    status: "Hoạt động 2 giờ trước",
-    img_avatar: "https://cf.shopee.vn/file/3516cab804d01f98cd79837a4a2ec698_tn",
-    img_bg: "https://cf.shopee.vn/file/3516cab804d01f98cd79837a4a2ec698_tn",
-    number_products: "163",
-    following: "2,1k",
-    follower: "53,8K",
-    answer_rate: "99%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (24,8k đánh giá)",
-  },
-  {
-    id: 9,
-    name: "ImaGodBreaker iGB- Local Brand",
-    status: "Hoạt động 2 giờ trước",
-    img_avatar: "	https://cf.shopee.vn/file/6c121ca5a930ccc451645358ef41ce89_tn",
-    img_bg: "	https://cf.shopee.vn/file/2b20786e92d125a1bc61a042cea3e24c_tn",
-    number_products: "98",
-    following: "0",
-    follower: "39,7K",
-    answer_rate: "90%",
-    cancel_order_rate: "1%",
-    quality_rate: "4.9 (1,8k đánh giá)",
-  },
-];
-
 const StoresDetails = (props) => {
   let navigate = useNavigate();
   const idProduct = useParams();
@@ -461,18 +328,6 @@ const SendDesign = styled.div`
   align-items: center;
 `;
 
-const StoreNameDetail = styled.p`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #b6b6b6;
-`;
-
-const StoreName = styled.p`
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 22px;
-`;
 
 const OverviewBtn = styled.button`
   background: none;
@@ -549,11 +404,6 @@ const PortraitInfo = styled.div`
   }
 `;
 
-const ActiveTime = styled.div`
-  font-size: 0.75rem;
-  color: #c2c2ab;
-  margin: 0.3125rem 0 0.375rem;
-`;
 
 const LogoImg = styled.div`
   cursor: pointer;

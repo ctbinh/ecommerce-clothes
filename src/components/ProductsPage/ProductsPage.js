@@ -12,7 +12,6 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { useCallback } from "react";
-import { NotificationManager } from "react-notifications";
 
 let data = [];
 const ProductsPage = (props) => {

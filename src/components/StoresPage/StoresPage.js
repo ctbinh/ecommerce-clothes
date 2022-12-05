@@ -6,57 +6,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../Header";
 import Footer from "../Footer";
-import images from "../images";
-import Filter from "./Filter";
 import Product from "./Product";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 
 let data = [];
 const StoresPage = (props) => {
-  const brands = [
-    {
-      id: 0,
-      name: "ACER",
-      img: images.acer,
-    },
-    {
-      id: 1,
-      name: "ASUS",
-      img: images.asus,
-    },
-    {
-      id: 2,
-      name: "GIGABYTE",
-      img: images.gigabyte,
-    },
-    {
-      id: 3,
-      name: "HP",
-      img: images.hp,
-    },
-    {
-      id: 4,
-      name: "LG",
-      img: images.lg,
-    },
-    {
-      id: 5,
-      name: "MSI",
-      img: images.msi,
-    },
-    {
-      id: 6,
-      name: "RAZER",
-      img: images.razer,
-    },
-  ];
-  let navigate = useNavigate();
   const [show, setShow] = useState(0);
   const [num, setNum] = useState(20);
   const [display, setDisplay] = useState(0);
-  const [brandsTaget, setBrandsTaget] = useState([]);
   const [currPage, setcurrPage] = useState(1);
   const [products, setproducts] = useState([
     {
@@ -123,8 +81,6 @@ const StoresPage = (props) => {
   const [countPage, setcountPage] = useState(0);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
-  const [value, setValue] = useState([0, 500]);
-  const [ramFilter, setRamFilter] = useState([]);
   const changePage = (event, value) => {
     setcurrPage(value);
   };
