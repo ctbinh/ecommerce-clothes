@@ -115,7 +115,7 @@ const Filter = (props) => {
         }}
         getAriaLabel={() => "Minimum distance"}
         value={props.value}
-        max={500}
+        max={3000000}
         onChange={handleChange}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}

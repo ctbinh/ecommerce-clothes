@@ -1,18 +1,17 @@
-import { Rating } from '@mui/material';
 import React from 'react'
 import styled from 'styled-components'
 import Button from '../Button';
-import { grey } from '@mui/material/colors';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import { useNavigate } from 'react-router-dom';
 
 const Product = (props) => {
-  const addToWishlist = (e) => {
-    alert('Đã thêm vào wish list của bạn')
-  }
+  let navigate = useNavigate();
+  const targetProduct = (id) => {
+    navigate("/detail/" + id);
+  };
   
   const product = props.product;
   return (
-    <Container key={props.idx} display={props.display} onClick={()=>props.onClick(product.id)}>
+    <Container key={props.idx} display={props.display} onClick={()=>targetProduct(product.id)}>
       <Box display={props.display}>
         <div>
           <Image display={props.display}>
@@ -23,7 +22,7 @@ const Product = (props) => {
           <Name display={props.display}>{product.name}</Name>
           {props.display === 1 && <Desc>{product.description}</Desc>}
           <Box display={props.display}>
-            <Text style={{fontSize: '20px'}}><b>{'$' + product.currentPrice}</b></Text>
+            <Text style={{fontSize: '18px'}}><b>{product.currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'đ'}</b></Text>
           </Box>
           {props.display === 1 && 
             <ComboBtn>

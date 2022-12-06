@@ -80,7 +80,7 @@ const StoresDetails = (props) => {
   const [countPage, setcountPage] = useState(5);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
-  const [value, setValue] = useState([0, 500]);
+  const [value, setValue] = useState([0, 3000000]);
   const [sizeFilter, setSizeFilter] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState([]);
   const [colorTarget, setColorTarget] = useState("");
@@ -138,7 +138,7 @@ const StoresDetails = (props) => {
         fromDate: "11/17/2022",
       };
       if (action === "clear") {
-        setValue([0, 500]);
+        setValue([0, 3000000]);
         setCategoryFilter([]);
         setSizeFilter([]);
         setColorTarget("");

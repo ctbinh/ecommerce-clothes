@@ -17,7 +17,7 @@ const CartItem = ({ item, removeItem, updateItem }) => {
             <h3>
               <a href="#">{item?.name}</a>
             </h3>
-            <p class="ml-4">${item?.price}</p>
+            <p class="ml-4">{item?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</p>
           </div>
           <p class="mt-1 text-sm text-gray-500">Size: {item?.size}</p>
           <div className="flex flex-row items-center mt-1">

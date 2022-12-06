@@ -11,7 +11,7 @@ const Orders = () => {
   const [targetTypeOrders, setTargetTypeOrders] = useState("PENDING");
   const filterOrders = (status) => {
     setTargetTypeOrders(status);
-    fetchOrders(status)
+    fetchOrders(status);
   };
   const cancelOrders = async (order) => {
     const data = {
@@ -31,7 +31,7 @@ const Orders = () => {
     });
     if (res.statusText === "OK" && dataGHN.data.code === 200) {
       swal("Completely!", "Cancel orders success", "success");
-      setTargetTypeOrders('CANCELED')
+      setTargetTypeOrders("CANCELED");
     } else {
       alert("ko ok");
     }
@@ -83,39 +83,42 @@ const Orders = () => {
         </TypeOrders>
       </NavOrders>
       <Hr color="#b8b8b8" />
-        {orders?.map((ord, idx) => {
-          return (
-            <Order key={idx}>
-              {ord.items.map((item, idx) => {
-                return (
-                  <Item key={idx}>
-                    <Image>
-                      <img src={item.coverImageUrl} alt="item" style={{ width: "auto", height: "100%" }} />
-                    </Image>
-                    <Detail>
-                      <Name>{item.name}</Name>
-                      <Desc>{item.description}</Desc>
-                      <Price>${item.price}</Price>
-                      <Qty>x{item.quantity}</Qty>
-                      <Price fw="bold">${item.price * item.quantity}</Price>
-                    </Detail>
-                  </Item>
-                );
-              })}
-              <Text style={{ textAlign: "right" }}>Delivery cost: ${ord.ship_cost ?? 2}</Text>
-              <Hr />
-              <Total>
-                <Text className="time">Date: {new Date(ord.date).toLocaleString()}</Text>
-                <Text className="total">Total: ${Math.round((ord.price + (ord.ship_cost ?? 2)) * 100) / 100}</Text>
-              </Total>
-              {targetTypeOrders === "PENDING" && (
-                <div style={{ textAlign: "right" }} onClick={() => IsSure(ord)}>
-                  <CancelBtn>Cancel</CancelBtn>
-                </div>
-              )}
-            </Order>
-          );
-        })}
+      {orders?.map((ord, idx) => {
+        return (
+          <Order key={idx}>
+            {ord.items.map((item, idx) => {
+              return (
+                <Item key={idx}>
+                  <Image>
+                    <img src={item.coverImageUrl} alt="item" style={{ width: "auto", height: "100%" }} />
+                  </Image>
+                  <Detail>
+                    <Name>{item.name}</Name>
+                    <Desc>{item.description}</Desc>
+                    <Price>${item.price}</Price>
+                    <Qty>x{item.quantity}</Qty>
+                    <Price fw="bold">{(item.price * item.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Price>
+                  </Detail>
+                </Item>
+              );
+            })}
+            <Text style={{ textAlign: "right" }}>Delivery cost: {ord.ship_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Text>
+            <Hr />
+            <Total>
+              <Text className="time">Date: {new Date(ord.date).toLocaleString()}</Text>
+              <Text className="total">
+                Total:
+                {(ord.price + ord.ship_cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ
+              </Text>
+            </Total>
+            {targetTypeOrders === "PENDING" && (
+              <div style={{ textAlign: "right" }} onClick={() => IsSure(ord)}>
+                <CancelBtn>Cancel</CancelBtn>
+              </div>
+            )}
+          </Order>
+        );
+      })}
     </Container>
   );
 };

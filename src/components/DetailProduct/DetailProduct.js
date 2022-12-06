@@ -75,7 +75,7 @@ const DetailProduct = () => {
 
             <div class="mt-4 lg:row-span-3 lg:mt-0">
               <h2 class="sr-only">Product information</h2>
-              <p class="text-3xl tracking-tight text-gray-900">${product?.currentPrice}</p>
+              <p class="text-3xl tracking-tight text-gray-900">{product?.currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</p>
 
               <div class="mt-6">
                 <h3 class="sr-only">Reviews</h3>

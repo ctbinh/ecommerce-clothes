@@ -110,7 +110,7 @@ const Cart = () => {
         to_address: `${cart.targetWard.WardName}, ${cart.targetDistrict.DistrictName}, ${cart.targetProvince.ProvinceName}`,
         to_ward_code: `${cart.targetWard.WardCode}`,
         to_district_id: cart.targetDistrict.DistrictID,
-        cod_amount: cart.items.reduce((total, item) => Math.round(total + item.price * 23000 * item.quantity), 0),
+        cod_amount: cart.items.reduce((total, item) => Math.round(total + item.price * item.quantity), 0),
         content: "Shop MU",
         weight: 1,
         length: 1,
@@ -118,15 +118,12 @@ const Cart = () => {
         height: 1,
         pick_station_id: cart.targetDistrict.DistrictID,
         deliver_station_id: null,
-        insurance_value: cart.items.reduce((total, item) => Math.round(total + item.price * 23000 * item.quantity), 0),
+        insurance_value: cart.items.reduce((total, item) => Math.round(total + item.price * item.quantity), 0),
         service_id: cart.targetService.service_id,
         service_type_id: cart.targetService.service_type_id,
         coupon: null,
         pick_shift: [2],
-        items: cart.items.map((item) => {
-          item.price = Math.round(item.price*23000);
-          return item;
-        }),
+        items: cart.items,
       },
     });
     const data = {
@@ -135,7 +132,7 @@ const Cart = () => {
       paymentMethod: "DIRECTLY",
       favourCode: couponCode,
       order_code_ghn: dataGHN.data.data.order_code,
-      ship_cost: Number(dataGHN.data.data.total_fee / 23000).toFixed(2),
+      ship_cost: dataGHN.data.data.total_fee,
     };
     const res = await axios.post(`${process.env.REACT_APP_URL_SERVER}/api/orders`, data, { withCredentials: true });
     if (res.status === 200 && dataGHN.data.code === 200) {

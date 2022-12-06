@@ -252,7 +252,8 @@ const Products = styled.div`
 `;
 
 const Poster = styled.img`
-  height: 350px;
+  height: 500px;
+  object-fit: cover;
   @media (max-width: 1024px) {
     height: 200px;
   }

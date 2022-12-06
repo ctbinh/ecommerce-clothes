@@ -192,7 +192,7 @@ const InputAddress = ({ address, setAddress, setCouponCode }) => {
         </Input.Group>
       </NameInput>
       <Line />
-      <NameInput label="Shipping">{`$${Number((fee / 23000).toFixed(2))}`}</NameInput>
+      <NameInput label="Shipping">{`${fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ`}</NameInput>
     </>
   );
 };
