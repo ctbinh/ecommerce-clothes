@@ -13,8 +13,9 @@ const InputAddress = ({ address, setAddress, setCouponCode }) => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
   const [services, setServices] = useState([]);
-  const [payments, setPayments] = useState(["Payment on delivery"])
-  const [fee, setFee] = useState(0);
+  const [payments, setPayments] = useState(["Payment on delivery", "Payment with VNPay"])
+  const [targetPayment, setTargetPayment] = useState('')
+  const {fee, setFee} = cart
 
   const getServices = async () => {
     const data = await axios({
@@ -154,7 +155,7 @@ const InputAddress = ({ address, setAddress, setCouponCode }) => {
             })}
           </Select>
         </Input.Group>
-        <Input style={{ marginTop: "10px", borderRadius: "5px" }} placeholder="Street..." onChange={(e) => changeStreet(e)}/>
+        <Input style={{ marginTop: "10px", borderRadius: "5px", fontWeight: "normal" }} placeholder="Street..." onChange={(e) => changeStreet(e)}/>
       </NameInput>
       <NameInput label="Coupone code">
         <Input style={{ borderRadius: "5px" }} onChange={(e) => setCouponCode(e.target.value)} placeholder="Enter your coupon code..." />
@@ -179,7 +180,7 @@ const InputAddress = ({ address, setAddress, setCouponCode }) => {
         <Input.Group>
           <Select
             placeholder="Select payment method"
-            onClick={getServices}
+            onSelect={(value)=>setTargetPayment(value)}
           >
             {payments?.map((item) => {
               return (

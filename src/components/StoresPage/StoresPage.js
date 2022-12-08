@@ -9,6 +9,7 @@ import Footer from "../Footer";
 import Product from "./Product";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
+import images from "../images";
 
 let data = [];
 const StoresPage = (props) => {
@@ -130,13 +131,16 @@ const StoresPage = (props) => {
       <Container>
         <Carousel>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="https://www.uniformhouse.com/images/Custom/banner1.jpg" alt="poster" />
+            <Poster src="https://i.pinimg.com/originals/02/cf/cf/02cfcffac595c832c514d58704cd82ce.jpg" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="http://www.e-khadigarments.com/images/banner6.png" alt="poster" />
+            <Poster src="https://img.freepik.com/free-vector/fashion-sale-banners-with-photo_52683-9828.jpg?w=2000" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg" alt="poster" />
+            <Poster src={images.landingbg} alt="poster" />
+          </Carousel.Item>
+          <Carousel.Item style={{ width: "100%", height: "100%" }}>
+            <Poster src="https://www.macquariecollege.nsw.edu.au/wp-content/uploads/2021/06/banner-uniform-shop-new.jpg" alt="poster" />
           </Carousel.Item>
         </Carousel>
         <Content>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Container, Row, Col } from "react-grid-system";
-// import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { NotificationManager } from "react-notifications";
+import { redirect } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import React, { useState, useEffect } from "react";
@@ -13,6 +13,9 @@ import CartItem from "./CartItem";
 import InputAddress from "./InputAddress";
 import { useContext } from "react";
 import CartContext from "./CartContext";
+import dateFormat from "dateformat";
+import CryptoJS from "crypto-js";
+import {Buffer} from 'buffer';
 
 const token = "9891ae72-415a-11ed-8636-7617f3863de9";
 const shopId = "3307734";
@@ -86,6 +89,80 @@ const Cart = () => {
         })
       );
     }
+  };
+  const payment_vnpay = () => {
+    var ipAddr = 1;
+
+    var tmnCode = process.env.REACT_APP_TMN_CODE;
+    var secretKey = process.env.REACT_APP_HASH_SECRET;
+    var vnpUrl = process.env.REACT_APP_URL;
+    var returnUrl = process.env.REACT_APP_RETURN_URL;
+
+    var date = new Date();
+
+    var createDate = dateFormat(date, "yyyymmddHHmmss");
+    var orderId = dateFormat(date, "HHmmss");
+    var amount = 100000;
+    var bankCode = "";
+
+    var orderInfo = "Thanh toan don hang thoi gian: " + dateFormat(date, "yyyy-mm-dd HH:mm:ss");
+    // var orderType = "topup";
+    var locale = "vn";
+    if (locale === null || locale === "") {
+      locale = "vn";
+    }
+    var currCode = "VND";
+    var vnp_Params = {};
+    vnp_Params["vnp_Version"] = "2.1.0";
+    vnp_Params["vnp_Command"] = "pay";
+    vnp_Params["vnp_TmnCode"] = tmnCode;
+    // vnp_Params['vnp_Merchant'] = ''
+    vnp_Params["vnp_Locale"] = locale;
+    vnp_Params["vnp_CurrCode"] = currCode;
+    vnp_Params["vnp_TxnRef"] = orderId;
+    vnp_Params["vnp_OrderInfo"] = orderInfo;
+    // vnp_Params["vnp_OrderType"] = orderType;
+    vnp_Params["vnp_Amount"] = amount * 100;
+    vnp_Params["vnp_ReturnUrl"] = returnUrl;
+    vnp_Params["vnp_IpAddr"] = ipAddr;
+    vnp_Params["vnp_CreateDate"] = createDate;
+    // vnp_Params["vnp_SecureHashType"] = "HmacSHA512";
+    if (bankCode !== null && bankCode !== "") {
+      vnp_Params["vnp_BankCode"] = bankCode;
+    }
+
+    vnp_Params = sortObject(vnp_Params);
+
+    var querystring = require("qs");
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    // var crypto = require("crypto");
+    // var hmac = createHmac("sha512", secretKey);
+    // var signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
+
+    var signed = CryptoJS.HmacSHA512(Buffer.from(signData, 'utf-8').toString(), secretKey).toString();
+
+    // const hashDigest = signData;
+    // const hmacDigest = Base64.stringify(hmacSHA512(hashDigest, secretKey));
+    vnp_Params["vnp_SecureHash"] = signed;
+    vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+    console.log(vnpUrl);
+    window.open(vnpUrl);
+  };
+
+  const sortObject = (obj) => {
+    var sorted = {};
+    var str = [];
+    var key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        str.push(encodeURIComponent(key));
+      }
+    }
+    str.sort();
+    for (key = 0; key < str.length; key++) {
+      sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
+    }
+    return sorted;
   };
   const order = async () => {
     const _address = address.street + ", " + address.ward + ", " + address.district + ", " + address.province;
@@ -230,6 +307,7 @@ const Cart = () => {
             )}
           </Col>
         </Row>
+        <button onClick={payment_vnpay}>test</button>
       </ContainerStyled>
       <Footer />
     </div>

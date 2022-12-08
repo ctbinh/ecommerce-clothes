@@ -17,6 +17,8 @@ import image2 from "./image2.png"
 import football from "./football.jpg"
 import logo from "./LOGO.png"
 import logo1 from "./LOGO1.png"
+import landingbg from "./landing-bg.jpg"
+import gift from './gift.png'
 
 const images = {
   football,
@@ -36,7 +38,9 @@ const images = {
   lg,
   hcmut,
   uniform,
-  logo, logo1
+  logo, logo1,
+  landingbg,
+  gift
 };
 
 export default images;

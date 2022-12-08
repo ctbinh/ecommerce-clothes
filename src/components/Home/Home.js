@@ -11,6 +11,7 @@ import { useState } from "react";
 import axios from "axios";
 import Product from "../ProductsPage/Product";
 import styled from "styled-components";
+import Coupon from "./Coupon";
 
 const Home = () => {
   const [isFirst, setIsFirst] = useState(true);
@@ -40,7 +41,6 @@ const Home = () => {
     setProducts(res.data.slice(0, 3));
   };
   useEffect(() => {
-    console.log(process.env.REACT_APP_URL_SERVER)
     const fetchProducts = async () => {
       if (isFirst) {
         const res = await axios.post(
@@ -57,13 +57,12 @@ const Home = () => {
           },
           { withCredentials: true }
         );
-        setProducts(res.data);
+        setProducts(res.data.slice(0, 3));
       }
     };
     fetchProducts();
     setIsFirst(false);
   }, [isFirst, products, targetTab]);
-
 
   return (
     <div>
@@ -154,6 +153,13 @@ const Home = () => {
             </Pd>
           </Tab>
         </Tabs>
+      </div>
+      <div className="grid grid-cols-3 gap-4 px-4">
+        <Coupon />
+        <Coupon />
+        <Coupon />
+        <Coupon />
+        <Coupon />
       </div>
       <Footer />
     </div>

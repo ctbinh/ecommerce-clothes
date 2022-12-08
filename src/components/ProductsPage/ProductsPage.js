@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { useCallback } from "react";
+import images from "../images";
 
 let data = [];
 const ProductsPage = (props) => {
@@ -69,7 +70,7 @@ const ProductsPage = (props) => {
   const [display, setDisplay] = useState(0);
   const [currPage, setcurrPage] = useState(1);
   const [products, setproducts] = useState([]);
-  const [countPage, setcountPage] = useState(5);
+  const [countPage, setcountPage] = useState(2);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
   const [value, setValue] = useState([0, 3000000]);
@@ -182,13 +183,16 @@ const ProductsPage = (props) => {
       <Container>
         <Carousel>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="https://www.uniformhouse.com/images/Custom/banner1.jpg" alt="poster" />
+            <Poster src="https://marketplace.canva.com/EAFGKRRskMs/1/0/1600w/canva-brown-and-beige-minimalist-fashion-banner-lYcbGpUSVGo.jpg" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="http://www.e-khadigarments.com/images/banner6.png" alt="poster" />
+            <Poster src="https://img.freepik.com/free-vector/fashion-sale-banners-with-photo_52683-9828.jpg?w=2000" alt="poster" />
           </Carousel.Item>
           <Carousel.Item style={{ width: "100%", height: "100%" }}>
-            <Poster src="https://az777500.vo.msecnd.net/images/2134/banner-store-quality-products-uniforms.jpg" alt="poster" />
+            <Poster src={images.landingbg} alt="poster" />
+          </Carousel.Item>
+          <Carousel.Item style={{ width: "100%", height: "100%" }}>
+            <Poster src="https://www.macquariecollege.nsw.edu.au/wp-content/uploads/2021/06/banner-uniform-shop-new.jpg" alt="poster" />
           </Carousel.Item>
         </Carousel>
         <Content>

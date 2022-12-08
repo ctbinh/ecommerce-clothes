@@ -77,7 +77,7 @@ const StoresDetails = (props) => {
   const [display, setDisplay] = useState(0);
   const [currPage, setcurrPage] = useState(1);
   const [products, setProducts] = useState([]);
-  const [countPage, setcountPage] = useState(5);
+  const [countPage, setcountPage] = useState(1);
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [isFirst, setIsFirst] = useState(true);
   const [value, setValue] = useState([0, 3000000]);
