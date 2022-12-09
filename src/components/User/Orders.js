@@ -90,7 +90,7 @@ const Orders = () => {
               return (
                 <Item key={idx}>
                   <Image>
-                    <img src={item.coverImageUrl} alt="item" style={{ width: "auto", height: "100%" }} />
+                    <img src={item.coverImageUrl} alt="item" style={{ width: "auto", height: "100%" }} className="rounded-md" />
                   </Image>
                   <Detail>
                     <Name>{item.name}</Name>
@@ -103,7 +103,7 @@ const Orders = () => {
               );
             })}
             <Text style={{ textAlign: "right" }}>Delivery cost: {ord.ship_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Text>
-            <Hr />
+            <Hr className="my-2"/>
             <Total>
               <Text className="time">Date: {new Date(ord.date).toLocaleString()}</Text>
               <Text className="total">
@@ -223,7 +223,8 @@ const Item = styled.div`
 `;
 const Order = styled.div`
   margin-top: 10px;
-  padding: 10px;
+  padding: 20px;
+  border-radius: 10px;
   width: 100%;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
@@ -234,7 +235,7 @@ const TypeOrders = styled.div`
   width: 150px;
   cursor: pointer;
   &.active {
-    border-bottom: 4px solid #0156ff;
+    border-bottom: 4px solid #000;
   }
 `;
 const NavOrders = styled.div`
@@ -263,7 +264,6 @@ const NavOrders = styled.div`
 const Hr = styled.hr`
   border: 0;
   height: 0.2px;
-  margin: 0px;
   background-image: -webkit-linear-gradient(gray, gray, gray);
 `;
 const Container = styled.div`

@@ -128,32 +128,32 @@ const Home = () => {
         </div>
       </div>
       <div class="flex flex-col items-center justify-center gap-4 divide-y">
-        <div className="flex w-full flex-col items-center justify-center">
-          <Tabs defaultActiveKey="home" className="my-[10px]" activeKey={targetTab} onSelect={(k) => onChange(k)}>
+        <div className="flex w-10/12 flex-col items-center justify-center">
+          <TabsCustom defaultActiveKey="home" className="my-[10px] w-4/12" justify activeKey={targetTab} onSelect={(k) => onChange(k)}>
             <Tab eventKey="NEW_ARRIVAL" title="New Arrivals">
-              <div className="flex w-full flex-row gap-4">
+              <div className="flex w-full flex-row gap-4 mt-2">
                 {products.map((product, idx) => {
                   return <Product key={idx} idx={idx} display={3} product={product} />;
                 })}
               </div>
             </Tab>
             <Tab eventKey="NONE" title="Best Seller">
-              <div className="flex w-full flex-row gap-4">
+              <div className="flex w-full flex-row gap-4 mt-2">
                 {products.map((product, idx) => {
                   return <Product key={idx} idx={idx} display={3} product={product} />;
                 })}
               </div>
             </Tab>
             <Tab eventKey="ON_SALE" title="On Sale">
-              <div className="flex w-full flex-row gap-4">
+              <div className="flex w-full flex-row gap-4 mt-2">
                 {products.map((product, idx) => {
                   return <Product key={idx} idx={idx} display={3} product={product} />;
                 })}
               </div>
             </Tab>
-          </Tabs>
+          </TabsCustom>
         </div>
-        <div className="grid w-9/12 grid-cols-3 gap-1 pt-4">
+        <div className="grid w-10/12 grid-cols-3 gap-1 pt-4">
           <Coupon />
           <Coupon />
           <Coupon />
@@ -165,9 +165,21 @@ const Home = () => {
     </div>
   );
 };
-const Pd = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1%;
+
+const TabsCustom = styled(Tabs)`
+  border: none;
+  transition: all ease-in-out 1s;
+  .nav-link {
+    :hover {
+      border: none;
+    }
+    transition: none;
+    color: gray;
+  }
+  .nav-link.active {
+    border: none;
+    color: black;
+    border-bottom: 3px solid black;
+  }
 `;
 export default Home;

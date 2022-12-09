@@ -189,7 +189,7 @@ const NavItem = styled.div`
   padding-left: 15px;
   cursor: pointer;
   &.active {
-    border-left: 3px solid #0156FF;
+    border-left: 3px solid #000;
   }
 `
 const NavBox = styled.div`

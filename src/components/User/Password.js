@@ -147,12 +147,12 @@ const ButtonSave = styled.button`
   border: none;
   float: right;
   margin-top: 20px;
-  background-color: #0156ff;
+  background-color: #000;
   font-weight: 600;
   color: white;
   transition: all 0.3s;
   :hover {
-    background-color: #00369f;
+    background-color: #222222;
   }
   cursor: pointer;
 `;

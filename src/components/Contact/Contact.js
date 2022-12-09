@@ -55,9 +55,9 @@ function Contact() {
   return (
     <>
       <Header />
-      <div className="container">
+      <div className="container w-10/12">
         <Carousel autoplay className="my-4">
-          <div className="h-28 bg-[#364d79] py-4 px-4">
+          <div className="h-28 bg-[#222429] py-4 px-4">
             <h3 style={contentStyle}>
               [Lưu ý khi nhận hàng] Nhớ đối chiếu các thông tin: mã đơn hàng, mã
               vận đơn, trạng thái đơn hàng và số tiền (nếu có) giữa gói hàng với
@@ -65,14 +65,14 @@ function Contact() {
               đặt bạn nhé!
             </h3>
           </div>
-          <div className="h-28 bg-[#364d79] py-4 px-4">
+          <div className="h-28 bg-[#222429] py-4 px-4">
             <h3 style={contentStyle}>
               Nhằm đảm bảo an toàn sức khỏe cộng đồng, nếu bạn có nhu cầu thay
               đổi hoặc hủy chuyến bay, vui lòng liên hệ chúng tôi trước 48 tiếng
               so với giờ khởi hành để được hỗ trợ.
             </h3>
           </div>
-          <div className="h-28 bg-[#364d79] py-4 px-4">
+          <div className="h-28 bg-[#222429] py-4 px-4">
             <h3 style={contentStyle}>
               [Cảnh báo] Hãy thận trọng khi nhận được lời mời làm việc từ các
               đối tượng lừa đảo thông qua tin nhắn, gọi điện, nhóm chat hoặc các
@@ -81,7 +81,7 @@ function Contact() {
               để được hỗ trợ sớm nhất.{" "}
             </h3>
           </div>
-          <div className="h-28 bg-[#364d79] py-4 px-4">
+          <div className="h-28 bg-[#222429] py-4 px-4">
             <h3 style={contentStyle}>
               Trang này KHÔNG THỂ tìm kiếm thông tin chi tiết đơn hàng, sản phẩm
               khuyến mãi hoặc số điện thoại. Để tra những nội dung trên, bạn có

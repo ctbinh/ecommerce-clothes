@@ -34,52 +34,13 @@ const Product = (props) => {
   );
 };
 
-const Text = styled.span`
-  margin: 0;
-  padding: 0;
-`;
 
-const ComboBtn = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-const Desc = styled.span`
-  width: 100%;
-  font-size: 13px;
-  max-height: 100px;
-  overflow: hidden;
-`;
-// const Box = styled.div`
-//   display: flex;
-//   flex-direction: ${(props) => (props.display === 0 ? "column" : "row")};
-//   .detail {
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-//     padding: 0 5px;
-//   }
-// `;
 const Name = styled.div`
   font-size: 20px;
   font-weight: 500;
   /* height: ${(props) => (props.display ? "30px" : "40px")}; */
   overflow: hidden;
 `;
-// const Rate = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: space-between;
-//   padding: ${props=>props.display?'0 10px':''};
-// `
-
-// const Status = styled.div`
-//   text-align: ${props => props.display === 0 ? 'left' : 'right'};
-//   color: ${props => props.color ? props.color : '#78A962'};
-//   font-size: 13px;
-// `
 const Image = styled.div`
   height: 120px;
   display: flex;
@@ -92,12 +53,15 @@ const Container = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  /* margin: 5px; */
   max-height: 300px;
+  border-radius: 10px;
   margin-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.09);
+  transition: all ease-in-out 0.3s;
   :hover {
     cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
   .detail {
     display: flex;
@@ -105,14 +69,5 @@ const Container = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  /* @media (max-width: 1080px) {
-    width: ${(props) => (props.display === 0 ? "32%" : "100%")};
-  }
-  @media (max-width: 768px) {
-    width: ${(props) => (props.display === 0 ? "49%" : "100%")};
-  }
-  @media (max-width: 480px) {
-    width: ${(props) => (props.display === 0 ? "100%" : "100%")};
-  } */
 `;
 export default Product;

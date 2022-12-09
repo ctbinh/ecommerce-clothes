@@ -218,22 +218,6 @@ const Ram = styled.div`
     justify-content: space-between;
   }
 `;
-const Brand = styled.img`
-  width: 48%;
-  margin: 1%;
-  height: 60px;
-  background-color: white;
-  padding: 5px 10px;
-  :hover {
-    cursor: pointer;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  }
-  @media (max-width: 768px) {
-    width: 24%;
-    margin: 0.5%;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
-  }
-`;
 const Colors = styled.div`
   width: 100%;
   display: flex;
@@ -261,6 +245,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   /* background-color: #F5F7FF; */
+  border-radius: 5px;
   background-color: white;
   border: 1px solid #e1e1e1;
   height: fit-content;

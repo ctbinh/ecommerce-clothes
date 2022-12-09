@@ -43,7 +43,7 @@ const Header = (props) => {
         variant="dark"
         style={{ backgroundColor: "black" }}
       >
-        <Container style={{}}>
+        <Container style={{width: "90%"}}>
           <Navbar.Brand
             as={Link}
             to="/"
@@ -129,6 +129,9 @@ const Header = (props) => {
                     <Dropdown.Item as={Link} to="/user">
                       My Account
                     </Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/contact">
+                      Help
+                    </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={signout} href="/login">
                       Sign out
@@ -142,6 +145,10 @@ const Header = (props) => {
 
                     <Dropdown.Item as={Link} to="/login">
                       Sign Up
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item as={Link} to="/contact">
+                      Help
                     </Dropdown.Item>
                   </>
                 )}
