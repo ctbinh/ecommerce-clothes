@@ -13,11 +13,11 @@ import asus from "./asus.png";
 import lg from "./lg.png";
 import hcmut from "./hcmut.png";
 import uniform from "./uniform.jpg";
-import image2 from "./image2.png"
-import football from "./football.jpg"
-import logo from "./LOGO.png"
-import logo1 from "./LOGO1.png"
-
+import image2 from "./image2.png";
+import football from "./football.jpg";
+import logo from "./LOGO.png";
+import logo1 from "./LOGO1.png";
+import mountain from "./mountains.jpg";
 const images = {
   football,
   image2,
@@ -36,7 +36,9 @@ const images = {
   lg,
   hcmut,
   uniform,
-  logo, logo1
+  logo,
+  logo1,
+  mountain,
 };
 
 export default images;
