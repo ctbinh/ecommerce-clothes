@@ -28,6 +28,7 @@ import StoresDetails from "./components/StoresDetails/StoresDetails";
 import UploadDesign from "./components/UploadDesign/UploadDesign";
 import DetailProduct from "./components/DetailProduct/DetailProduct";
 import { NotificationContainer } from "react-notifications";
+import Contact from "./components/Contact/Contact";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -64,7 +65,11 @@ function App() {
           <Route path="stores" element={<StoresPage />} />
           <Route path="stores/:id" element={<StoresDetails />} />
           <Route path="stores/:id/design" element={<UploadDesign />} />
-          <Route path="detail/:product_id" element={<DetailProduct user={user} />} />
+          <Route
+            path="detail/:product_id"
+            element={<DetailProduct user={user} />}
+          />
+          <Route path="contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </div>
