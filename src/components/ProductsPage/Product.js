@@ -54,7 +54,7 @@ const Desc = styled.span`
 `;
 const Box = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.display === 0 ? "column" : "row")};
+  flex-direction: ${(props) => (props.display === 1 ? "row" : "column")};
   .detail {
     display: flex;
     flex-direction: column;
@@ -68,39 +68,27 @@ const Name = styled.div`
   /* height: ${(props) => (props.display ? "30px" : "40px")}; */
   overflow: hidden;
 `;
-// const Rate = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: space-between;
-//   padding: ${props=>props.display?'0 10px':''};
-// `
-
-// const Status = styled.div`
-//   text-align: ${props => props.display === 0 ? 'left' : 'right'};
-//   color: ${props => props.color ? props.color : '#78A962'};
-//   font-size: 13px;
-// `
 const Image = styled.div`
-  width: ${(props) => (props.display === 0 ? "auto" : "200px")};
-  height: 250px;
+  width: ${(props) => (props.display === 1 ? "200px" : "auto")};
+  height: ${(props) => (props.display === 1 ? "250px" : "220px")};
   display: flex;
   flex-direction: column;
+  img {
+    border-radius: 10px;
+  }
   align-items: center;
   overflow: hidden;
 `;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid transparent;
-  /* padding: 10px; */
   width: ${(props) => (props.display === 0 ? "24%" : "100%")};
   max-height: 300px;
   margin-bottom: 5px;
-  box-shadow: ${(props) => (props.display === 1 ? "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" : "rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;")};
+  transition: all ease-in 0.3s, width ease-in-out 1s;
   :hover {
     cursor: pointer;
-    border: 1px solid gray;
+    transform: scale(1.05);
   }
   @media (max-width: 1080px) {
     width: ${(props) => (props.display === 0 ? "32%" : "100%")};

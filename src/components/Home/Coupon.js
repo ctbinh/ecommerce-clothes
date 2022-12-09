@@ -1,16 +1,17 @@
 import React from "react";
-import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import { Avatar } from "@mui/material";
 
 const Coupon = () => {
   return (
-    <div className="grid grid-cols-5 gap-1 rounded border bg-[#1AA7FE]">
-      <div className="col-span-2 flex flex-col items-center justify-center p-2 text-center text-xl text-white">
-        <ConfirmationNumberOutlinedIcon fontSize="large" className="scale-150" />
-        Discount 100.000đ
+    <div className="grid grid-cols-7 gap-2 rounded bg-ticket-background bg-contain bg-center bg-no-repeat mx-auto p-4 ticket">
+      <div className="col-span-5 flex-col rounded-r p-2 flex justify-between gap-1">
+        <div className="text-black text-lg">Discount 100.000đ</div>
+        <div className="rounded border-1 border-[#d3d3d3] p-1 text-center text-md text-white bg-black font-bold">GIFTCODE</div>
+        <div className="text-black text-sm">Use in: 2 days</div>
       </div>
-      <div className="col-span-3 flex-col bg-[#08283c] p-2">
-        <div className="text-center text-white">Promotion code:</div>
-        <div className="border border-cyan-500 text-center text-sky-400">GIFTCODE</div>
+      <div className="col-span-2 flex flex-col items-center justify-center rounded-l p-2 text-center text-xl text-black">
+        <Avatar sx={{ width: 60, height: 60 }} className="border-2" alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/1564162499888517121/2Pn8AyNV_400x400.png" />
+        Adidas
       </div>
     </div>
   );

@@ -114,7 +114,6 @@ const Login = (props) => {
       <Header />
       <Container>
         <Head>
-          <h2 style={{ marginTop: "10px", width: "50%" }}>{targetTab === "login" ? "Customer Login" : "Create Account"}</h2>
           <Button className="phone" variant="primary" style={{ borderRadius: "20px" }} onClick={targetTab === "login" ? () => changeTab(1) : () => changeTab("login")}>
             {targetTab === "login" ? "Sign up" : "Sign in"}
           </Button>

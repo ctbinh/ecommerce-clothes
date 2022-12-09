@@ -38,7 +38,7 @@ const Home = () => {
       },
       { withCredentials: true }
     );
-    setProducts(res.data.slice(0, 3));
+    setProducts(res.data.slice(0, 5));
   };
   useEffect(() => {
     const fetchProducts = async () => {
@@ -57,7 +57,7 @@ const Home = () => {
           },
           { withCredentials: true }
         );
-        setProducts(res.data.slice(0, 3));
+        setProducts(res.data.slice(0, 5));
       }
     };
     fetchProducts();
@@ -68,8 +68,8 @@ const Home = () => {
     <div>
       <Header />
       {/* Change background image in line 19 */}
-      <div className="bg-landing-background bg-cover h-[600px] ">
-        <div className="flex backdrop-brightness-75 flex-col h-[600px] justify-center items-center text-white">
+      <div className="h-[600px] bg-landing-background bg-cover ">
+        <div className="flex h-[600px] flex-col items-center justify-center text-white backdrop-brightness-75">
           <h1 className="text-[15px]">NEW COLLECTION</h1>
           <h1 className="text-[40px]">FIND YOUR</h1>
           <h1 className="text-[70px]">PERFECT</h1>
@@ -78,88 +78,88 @@ const Home = () => {
             onClick={() => {
               navigation("/products?category=FOOTBALL");
             }}
-            className="mt-3 px-[10px] py-[15px] bg-white text-black"
+            className="mt-3 rounded-lg bg-white px-[10px] py-[15px] text-black"
           >
             SHOP THE COLLECTION
           </button>
         </div>
       </div>
-      <div className="bg-black grid  grid-cols-3 px-[200px] gap-[30px]">
-        <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
-          <img src={images.football} className="relative" alt="football"></img>
+      <div className="grid grid-cols-3  gap-[30px] bg-black px-[200px]">
+        <div className="flex translate-y-[-30%] flex-col items-center justify-center text-white transition duration-700 ease-in-out hover:scale-105">
+          <img src={images.football} className="relative rounded-2xl" alt="football"></img>
           <button
             onClick={() => {
               navigation("/products?category=FOOTBALL");
             }}
-            className="px-[7px] py-[10px] bg-white text-black absolute top-[0%] translate-y-[480%]"
+            className="absolute top-[0%] translate-y-[480%] rounded-lg bg-white px-[15px] py-[10px] text-black"
           >
             SHOP THE COLLECTION
           </button>
-          <h1 className="text-[20px] font-bold mt-[10px]">FOOTBALL</h1>
+          <h1 className="mt-[10px] text-[20px] font-bold">FOOTBALL</h1>
           <p className="mt-[15px] text-center">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
 
-        <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
-          <img src={images.uniform} className="relative" alt="uniform"></img>
+        <div className="flex translate-y-[-30%] flex-col items-center justify-center text-white transition duration-700 ease-in-out hover:scale-105">
+          <img src={images.uniform} className="relative rounded-2xl" alt="uniform"></img>
           <button
             onClick={() => {
               navigation("/products?category=UNIFORM");
             }}
-            className="px-[7px] py-[10px] bg-white text-black absolute top-[0%] translate-y-[480%]"
+            className="absolute top-[0%] translate-y-[480%] rounded-lg bg-white px-[15px] py-[10px] text-black"
           >
             SHOP THE COLLECTION
           </button>
-          <h1 className="text-[20px] font-bold mt-[10px]">UNIFORM</h1>
+          <h1 className="mt-[10px] text-[20px] font-bold">UNIFORM</h1>
           <p className="mt-[15px] text-center">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
 
-        <div className="translate-y-[-30%] flex flex-col justify-center items-center text-white">
-          <img src={images.image2} className="relative" alt="img"></img>
+        <div className="flex translate-y-[-30%] flex-col items-center justify-center text-white transition duration-700 ease-in-out hover:scale-105">
+          <img src={images.image2} className="relative rounded-2xl" alt="img"></img>
           <button
             onClick={() => {
               navigation("/products?category=OTHER");
             }}
-            className="px-[7px] py-[10px] bg-white text-black absolute top-[0%] translate-y-[480%]"
+            className="absolute top-[0%] translate-y-[480%] rounded-lg bg-white px-[15px] py-[10px] text-black"
           >
             SHOP THE COLLECTION
           </button>
-          <h1 className="text-[20px] font-bold mt-[10px]">OTHER</h1>
+          <h1 className="mt-[10px] text-[20px] font-bold">OTHER</h1>
           <p className="mt-[15px] text-center">See our top-picks for jean jackets that are oversized,distressed and downright cool.</p>
         </div>
       </div>
-
-      <div className="flex flex-col items-center justify-center w-full">
-        <h1 className="text-[20px] mt-[8px] font-semibold">GOT HAVE IT</h1>
-        <Tabs defaultActiveKey="home" className="mt-[10px]" activeKey={targetTab} onSelect={(k) => onChange(k)}>
-          <Tab eventKey="NEW_ARRIVAL" title="New Arrivals">
-            <Pd>
-              {products.map((product, idx) => {
-                return <Product key={idx} idx={idx} display={0} product={product} />;
-              })}
-            </Pd>
-          </Tab>
-          <Tab eventKey="NONE" title="Best Seller">
-            <Pd>
-              {products.map((product, idx) => {
-                return <Product key={idx} idx={idx} display={0} product={product} />;
-              })}
-            </Pd>
-          </Tab>
-          <Tab eventKey="ON_SALE" title="On Sale">
-            <Pd>
-              {products.map((product, idx) => {
-                return <Product key={idx} idx={idx} display={0} product={product} />;
-              })}
-            </Pd>
-          </Tab>
-        </Tabs>
-      </div>
-      <div className="grid grid-cols-3 gap-4 px-4">
-        <Coupon />
-        <Coupon />
-        <Coupon />
-        <Coupon />
-        <Coupon />
+      <div class="flex flex-col items-center justify-center gap-4 divide-y">
+        <div className="flex w-full flex-col items-center justify-center">
+          <Tabs defaultActiveKey="home" className="my-[10px]" activeKey={targetTab} onSelect={(k) => onChange(k)}>
+            <Tab eventKey="NEW_ARRIVAL" title="New Arrivals">
+              <div className="flex w-full flex-row gap-4">
+                {products.map((product, idx) => {
+                  return <Product key={idx} idx={idx} display={3} product={product} />;
+                })}
+              </div>
+            </Tab>
+            <Tab eventKey="NONE" title="Best Seller">
+              <div className="flex w-full flex-row gap-4">
+                {products.map((product, idx) => {
+                  return <Product key={idx} idx={idx} display={3} product={product} />;
+                })}
+              </div>
+            </Tab>
+            <Tab eventKey="ON_SALE" title="On Sale">
+              <div className="flex w-full flex-row gap-4">
+                {products.map((product, idx) => {
+                  return <Product key={idx} idx={idx} display={3} product={product} />;
+                })}
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
+        <div className="grid w-9/12 grid-cols-3 gap-1 pt-4">
+          <Coupon />
+          <Coupon />
+          <Coupon />
+          <Coupon />
+          <Coupon />
+        </div>
       </div>
       <Footer />
     </div>

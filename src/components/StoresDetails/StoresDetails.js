@@ -187,7 +187,7 @@ const StoresDetails = (props) => {
             <LogoContainer>
               <Portrait>
                 <LogoImg>
-                  <img src={store?.brandUrl} style={{ height: "100%", width: "100%" }} alt="" />
+                  <img src={store?.brandUrl} style={{ height: "100%", width: "100%", objectFit: "contain" }} alt="" />
                 </LogoImg>
                 <PortraitInfo>
                   <h1>{store?.name}</h1>

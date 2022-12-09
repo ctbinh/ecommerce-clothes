@@ -115,12 +115,13 @@ const InforIcon = styled.div`
   align-items: center;
 `;
 const SubRow = styled.div`
-  background-color: gray;
+  background-color: black;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   height: 60px;
+  color: gray;
   border: none;
   border-top: white solid 1px;
 

@@ -174,28 +174,24 @@ const SearchBar = styled.div`
   justify-content: center;
   background-color: white;
   border: none;
-  /* border-radius: 15px; */
+  border-radius: 10px;
   margin-right: 2vw;
-  padding: 2px;
-  max-width: 250px;
-  /* @media (max-width: 768px){
-    display: none;
-  } */
+  padding: 5px 12px;
+  width: 300px;
 `;
 const SearchInput = styled.input`
   display: inline;
   border: none;
   outline: none;
   /* margin-left: 15px; */
-  width: 80%;
+  width: 100%;
 `;
 const SearchButton = styled.button`
   display: inline;
   border: none;
-  background-color: white;
-  /* border-radius: 50%; */
+  background-color: none;
+  border-radius: 50%;
   width: 24px;
-  /* padding: 5px; */
   i {
     width: 16px;
   }

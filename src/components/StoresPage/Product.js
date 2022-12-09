@@ -19,16 +19,10 @@ const Product = (props) => {
       display={props.display}
       onClick={() => navigate("/stores/" + product.id)}
     >
-      {/* {product.amount > 0 ?
-        <Status display={props.display}>
-          <i className="fa fa-check-circle" aria-hidden="true"></i> in stock
-        </Status> : <Status display={props.display} color="#cf2115">
-          <i className="fa fa-check-circle" aria-hidden="true"></i> out of stock
-        </Status>} */}
       <Image display={props.display}>
         <img
           src={product.brandUrl}
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: "100%", width: "100%", objectFit: "contain" }}
           alt="laptop"
         />
       </Image>
