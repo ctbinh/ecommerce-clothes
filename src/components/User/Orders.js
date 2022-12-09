@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { confirmAlert } from "react-confirm-alert";
 import swal from "sweetalert";
+import images from "../images";
 
 const token = "9891ae72-415a-11ed-8636-7617f3863de9";
 const shopId = "3307734";
@@ -103,7 +104,7 @@ const Orders = () => {
               );
             })}
             <Text style={{ textAlign: "right" }}>Delivery cost: {ord.ship_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}đ</Text>
-            <Hr className="my-2"/>
+            <Hr className="my-2" />
             <Total>
               <Text className="time">Date: {new Date(ord.date).toLocaleString()}</Text>
               <Text className="total">
@@ -119,6 +120,11 @@ const Orders = () => {
           </Order>
         );
       })}
+      {orders?.length === 0 && (
+        <div className="flex items-center justify-center h-full">
+          <img src={images.noorders} alt="no orders" className="w-4/12 h-full" />
+        </div>
+      )}
     </Container>
   );
 };
@@ -269,6 +275,7 @@ const Hr = styled.hr`
 const Container = styled.div`
   padding: 0;
   width: 100%;
+  height: 100%;
 `;
 
 export default Orders;

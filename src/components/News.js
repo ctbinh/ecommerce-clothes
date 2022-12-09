@@ -2,15 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
 
 const News = () => {
+  let navigate = useNavigate();
   return (
     <>
       <Header />
       <Container>
         <Posts>
-          <Post>
-            <Img src="https://www.colourup.com.au/pub/media/wysiwyg/114aa63790aa455f53ed9c9d2c2915e3.png" />
+          <Post onClick={() => navigate("/news/1")} >
+            <Img src="https://i0.wp.com/nybreaking.com/wp-content/uploads/2022/09/Virgin-Atlantic-scraps-gendered-uniforms-and-will-hand-out-pronoun.jpg" />
             <Content>
               <Title>How to choose uniform?</Title>
               <Date>2022-06-11</Date>
@@ -25,8 +27,8 @@ const News = () => {
               </TagsPost>
             </Content>
           </Post>
-          <Post>
-            <Img src="https://www.chorltonhigh.manchester.sch.uk/images/news/239_HJR2943_ChorltonHigh_RoscoeRutter_Apr22.jpg" />
+          <Post onClick={() => navigate("/news/2")}>
+            <Img src="https://t3.ftcdn.net/jpg/02/34/47/78/360_F_234477816_vNnz8cBpW1e7pRNzIMcT9mbDuOJKNnx8.jpg" />
             <Content>
               <Title>Uniform?</Title>
               <Date>2022-06-09</Date>
@@ -41,7 +43,7 @@ const News = () => {
               </TagsPost>
             </Content>
           </Post>
-          <Post>
+          <Post onClick={() => navigate("/news/3")}>
             <Img src="https://i.pinimg.com/736x/83/fe/60/83fe60aaa9885e8675f44deda105d4bb.jpg" />
             <Content>
               <Title>Teamate?</Title>
@@ -130,9 +132,12 @@ const TagItem = styled.div`
 `;
 
 const Title = styled.div`
-  color: #427ef5;
+  color: grey;
   font-weight: bold;
   font-size: 24px;
+  :hover {
+    color: #427ef5;
+  }
   @media (max-width: 768px) {
     font-size: 18px;
   }

@@ -20,6 +20,8 @@ import football from "./football.jpg";
 import logo from "./LOGO.png";
 import logo1 from "./LOGO1.png";
 import mountain from "./mountains.jpg";
+import noitem from "./no-item.jpg";
+import noorders from "./no-order.svg"
 const images = {
   football,
   image2,
@@ -42,6 +44,8 @@ const images = {
   landingbg,
   gift,
   mountain,
+  noitem,
+  noorders
 };
 
 export default images;

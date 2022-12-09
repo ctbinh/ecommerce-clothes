@@ -15,7 +15,8 @@ import { useContext } from "react";
 import CartContext from "./CartContext";
 import dateFormat from "dateformat";
 import CryptoJS from "crypto-js";
-import {Buffer} from 'buffer';
+import { Buffer } from "buffer";
+import images from "./images";
 
 const token = "9891ae72-415a-11ed-8636-7617f3863de9";
 const shopId = "3307734";
@@ -139,7 +140,7 @@ const Cart = () => {
     // var hmac = createHmac("sha512", secretKey);
     // var signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
 
-    var signed = CryptoJS.HmacSHA512(Buffer.from(signData, 'utf-8').toString(), secretKey).toString();
+    var signed = CryptoJS.HmacSHA512(Buffer.from(signData, "utf-8").toString(), secretKey).toString();
 
     // const hashDigest = signData;
     // const hmacDigest = Base64.stringify(hmacSHA512(hashDigest, secretKey));
@@ -256,6 +257,11 @@ const Cart = () => {
                 return <CartItem item={item} removeItem={removeItem} updateItem={updateItem} />;
               })}
             </ListItem>
+            {items?.length === 0 && (
+              <div className="flex flex-col items-center justify-center">
+                <img src={images.noitem} alt="no item" className="w-5/12" />
+              </div>
+            )}
           </Col>
           <Col xl={4} style={ContainerSummary}>
             <Title>Summary</Title>
