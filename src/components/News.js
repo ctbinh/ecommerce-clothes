@@ -2,14 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const News = () => {
+  let navigate = useNavigate();
   return (
     <>
       <Header />
       <Container>
         <Posts>
-          <Post>
+          <Post onClick={() => navigate("/news/1")} >
             <Img src="https://images.businessnewsdaily.com/app/uploads/2022/04/04074553/1554244010.jpeg" />
             <Content>
               <Title>How to fix my laptop?</Title>
@@ -25,7 +28,7 @@ const News = () => {
               </TagsPost>
             </Content>
           </Post>
-          <Post>
+          <Post onClick={() => navigate("/news/2")}>
             <Img src="http://winplasplas.com/wp-content/uploads/2021/06/mchin_180905_4061_0006.0.jpg" />
             <Content>
               <Title>How to choose the fastest laptop?</Title>
@@ -42,7 +45,7 @@ const News = () => {
               </TagsPost>
             </Content>
           </Post>
-          <Post>
+          <Post onClick={() => navigate("/news/3")}>
             <Img src="https://cdn1.hoanghamobile.com/tin-tuc/wp-content/uploads/2020/01/1-18.jpg" />
             <Content>
               <Title>How to choose laptop for programming?</Title>
@@ -133,9 +136,12 @@ const TagItem = styled.div`
 `;
 
 const Title = styled.div`
-  color: #427ef5;
+  color: grey;
   font-weight: bold;
   font-size: 24px;
+  :hover {
+    color: #427ef5;
+  }
   @media (max-width: 768px) {
     font-size: 18px;
   }

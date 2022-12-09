@@ -19,6 +19,7 @@ import Login from "./components/Login/Login";
 import { useEffect, useState } from "react";
 import About from "./components/About";
 import News from "./components/News";
+import NewsDetail from "./components/NewsDetail";
 import { Provider } from "react-redux";
 import store from "./store";
 import ProductsPage from "./components/ProductsPage/ProductsPage";
@@ -56,6 +57,7 @@ function App() {
           <Route path="checkout" element={<Checkout user={user} />} />
           <Route path="about" element={<About />} />
           <Route path="news" element={<News />} />
+          <Route path="news/:id" element={<NewsDetail />} />
           <Route path="user" element={<User />} />
           <Route path="stores" element={<StoresPage />} />
           <Route path="stores/:id" element={<StoresDetails />} />
